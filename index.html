@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MK WIN 25</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+
+    <style>
+        /* Premium Solid Yellow Theme (BDWIN24 style) */
+        body { font-family: 'Inter', sans-serif; background-color: #f4f5f8; color: #333; max-width: 480px; margin: 0 auto; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
+        
+        .text-gold { color: #F3C326; } 
+        .bg-gold { background-color: #F3C326; }
+        .border-gold { border-color: #F3C326; }
+        .casino-gradient { background: #F3C326; color: #fff; }
+        .casino-dark-gradient { background: #ffffff; color: #333; border-bottom: 1px solid #eee; }
+        
+        .hidden-el { display: none !important; }
+        input, select { background: #f9fafb !important; color: #333 !important; border: 1px solid #e2e8f0 !important; outline: none; transition: box-shadow 0.3s, border-color 0.3s; }
+        input:focus, select:focus { border-color: #F3C326 !important; box-shadow: 0 0 10px rgba(243, 195, 38, 0.15) !important; }
+        input[readonly] { user-select: none; }
+        
+        .premium-card { background-color: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .premium-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+
+        .top-method-active { border: 2px solid #F3C326 !important; background: rgba(243, 195, 38, 0.05) !important; position: relative; }
+        .top-method-active::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 4px; right: 6px; color: #F3C326; font-size: 12px; }
+        
+        .channel-card-new { transition: 0.2s; }
+        .amt-btn { background: #fff !important; border: 1px solid #e2e8f0 !important; color: #64748b; transition: all 0.2s; }
+        .amt-btn-active { border-color: #F3C326 !important; color: #d97706 !important; background: rgba(243, 195, 38, 0.1) !important; box-shadow: 0 4px 15px rgba(243, 195, 38, 0.2) !important; transform: translateY(-1px); }
+        
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        .win-item-anim { animation: slideUpFade 0.4s ease forwards; }
+
+        .market-btn { background-color: transparent; border: none; border-radius: 8px; padding: 10px 4px; text-align: center; color: #94a3b8; font-weight: 700; font-size: 11px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+        .market-btn-active { background: #F3C326; color: #fff; box-shadow: 0 4px 10px rgba(243, 195, 38, 0.3); transform: translateY(-2px); }
+
+        /* Wingo Game Balls Original Styles Maintained */
+        .ball { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 22px; position: relative; box-shadow: inset 0 -4px 8px rgba(0,0,0,0.3), 0 4px 10px rgba(0,0,0,0.25); border: 2px solid rgba(255,255,255,0.2); margin: 0 auto; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: transform 0.1s; color: white;}
+        .ball:active { transform: scale(0.95); }
+        .bg-g { background: radial-gradient(circle at 30% 30%, #4ade80, #16a34a); } 
+        .bg-r { background: radial-gradient(circle at 30% 30%, #f87171, #dc2626); } 
+        .bg-v { background: radial-gradient(circle at 30% 30%, #c084fc, #9333ea); }
+        .bg-0 { background: radial-gradient(circle at 30% 30%, #dc2626 50%, #9333ea 50%); } 
+        .bg-5 { background: radial-gradient(circle at 30% 30%, #16a34a 50%, #9333ea 50%); }
+        
+        .btn-green-glossy { background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,0.3), 0 6px 15px rgba(22,163,74,0.3); border: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .btn-red-glossy { background: linear-gradient(180deg, #f87171 0%, #dc2626 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,0.3), 0 6px 15px rgba(220,38,38,0.3); border: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .btn-violet-glossy { background: linear-gradient(180deg, #c084fc 0%, #9333ea 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,0.3), 0 6px 15px rgba(147,51,234,0.3); border: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+
+        #csFloatBtn { position: fixed; bottom: 100px; right: 20px; z-index: 9999; width: 50px; height: 50px; border-radius: 50%; background: #F3C326; box-shadow: 0 4px 20px rgba(243, 195, 38, 0.5); display: flex; align-items: center; justify-content: center; cursor: grab; user-select: none; }
+        #csFloatBtn:active { cursor: grabbing; }
+        #csFloatBtn i { color: #fff; }
+
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-left: 2px; }
+        .dot-green { background-color: #22c55e; } .dot-red { background-color: #ef4444; } .dot-violet { background-color: #a855f7; }
+        
+        .result-popup { animation: popUpScale 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards; transform: scale(0.5); opacity: 0; z-index: 10000; }
+        @keyframes popUpScale { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .confetti { position: absolute; width: 10px; height: 10px; background-color: #F3C326; animation: fall 3s linear infinite; }
+        @keyframes fall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(600px) rotate(720deg); opacity: 0; } }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        #splashScreen { transition: opacity 0.5s ease-out; }
+        @keyframes popInLock { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .countdown-digit-lock { animation: popInLock 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards; }
+        
+        #liveWinningFeed::-webkit-scrollbar { display: none; }
+        #liveWinningFeed { scrollbar-width: none; }
+        
+        /* Banner Slider Transition */
+        .slider-img { transition: opacity 0.8s ease-in-out; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body class="bg-[#f4f5f8] text-gray-800">
+
+<audio id="tickSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+
+<!-- SPLASH SCREEN -->
+<div id="splashScreen" class="fixed inset-0 z-[9999] bg-[#F3C326] flex flex-col items-center justify-center overflow-hidden">
+    <div class="relative z-10 flex flex-col items-center justify-center mt-20">
+        <div class="w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-lg mb-4">
+            <i class="fas fa-gem text-[#F3C326] text-5xl"></i>
+        </div>
+        <h2 class="text-white text-4xl font-black italic tracking-wider drop-shadow-md">MK WIN 25</h2>
+    </div>
+    <div class="mt-auto mb-10 z-10"><i class="fas fa-spinner fa-spin text-white text-3xl drop-shadow-md"></i></div>
+</div>
+
+<div id="app" class="relative min-h-screen pb-20">
+
+    <div id="csFloatBtn" onclick="openCsChat()"><i class="fas fa-headset text-2xl"></i></div>
+
+    <!-- AUTH PAGE -->
+    <div id="authPage" class="fixed inset-0 z-[2000] bg-white overflow-y-auto hidden-el">
+        <div class="bg-[#F3C326] text-white px-4 pt-4 pb-16 relative z-10">
+            <div class="flex justify-between items-center mb-6">
+                <i class="fas fa-angle-left text-2xl cursor-pointer hover:scale-110 transition text-white"></i>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-1 text-sm font-bold px-3 py-1 bg-white/20 rounded shadow-inner text-white">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" class="w-5 h-3 shadow-sm"> EN
+                    </div>
+                </div>
+            </div>
+            <div class="text-center px-2">
+                <h1 class="text-4xl font-black italic tracking-tighter drop-shadow-md text-white mb-2"><i class="fas fa-gem"></i> MK WIN 25</h1>
+                <h2 id="authTitle" class="text-2xl font-bold mb-1 text-white">Log in</h2>
+                <p id="authSubtitle" class="text-sm text-white/90">Please log in with your phone number</p>
+            </div>
+        </div>
+
+        <div class="bg-[#f4f5f8] -mt-6 mx-0 px-6 pt-10 pb-10 min-h-[70vh] rounded-t-3xl relative z-20 shadow-[0_-10px_25px_rgba(0,0,0,0.05)]">
+            <div class="flex justify-center mb-6 border-b border-gray-200">
+                <button id="regTab" class="pb-3 text-[#F3C326] font-bold text-base border-b-2 border-[#F3C326] w-1/2 text-center">
+                    <i class="fas fa-mobile-alt text-lg mr-1"></i> <span id="regTabText">Phone number</span>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-gray-500 font-medium mb-1 block">Phone number</label>
+                    <div class="flex gap-2">
+                        <div class="bg-white border border-gray-200 text-gray-600 font-bold p-3.5 rounded-lg flex items-center justify-center w-24">+880 <i class="fas fa-angle-down ml-1 text-gray-400"></i></div>
+                        <input type="number" id="authPhone" class="flex-1 p-3.5 rounded-lg font-bold placeholder-gray-400 bg-white border border-gray-200 focus:border-[#F3C326]" placeholder="Phone number">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm text-gray-500 font-medium mb-1 block" id="passLabel">Password</label>
+                    <div class="relative">
+                        <input type="password" id="authPass" class="w-full p-3.5 rounded-lg font-bold placeholder-gray-400 bg-white border border-gray-200 pr-12 focus:border-[#F3C326]" placeholder="Password">
+                        <i class="far fa-eye-slash absolute right-4 top-4 text-gray-400 text-lg cursor-pointer hover:text-gray-600" onclick="togglePasswordVisibility('authPass', this)"></i>
+                    </div>
+                </div>
+                <div id="confirmPassBox">
+                    <label class="text-sm text-gray-500 font-medium mb-1 block">Confirm password</label>
+                    <div class="relative">
+                        <input type="password" id="authConfirmPass" class="w-full p-3.5 rounded-lg font-bold placeholder-gray-400 bg-white border border-gray-200 pr-12 focus:border-[#F3C326]" placeholder="Confirm password">
+                        <i class="far fa-eye-slash absolute right-4 top-4 text-gray-400 text-lg cursor-pointer hover:text-gray-600" onclick="togglePasswordVisibility('authConfirmPass', this)"></i>
+                    </div>
+                </div>
+                <div id="inviteCodeBox">
+                    <label class="text-sm text-gray-500 font-medium mb-1 block">Invite code</label>
+                    <div class="relative"><input type="text" id="authInviteCode" class="w-full p-3.5 rounded-lg font-bold placeholder-gray-400 bg-white border border-gray-200 focus:border-[#F3C326]" placeholder="Invite Code (Optional)"></div>
+                </div>
+                
+                <div class="flex items-center gap-2 pt-2" id="agreementBox"><div class="w-5 h-5 rounded-full bg-[#F3C326] text-white flex items-center justify-center text-xs"><i class="fas fa-check"></i></div><span class="text-gray-500 text-sm">I read and agree <span class="text-[#F3C326] cursor-pointer font-bold">【Privacy Agreement】</span></span></div>
+                <div class="flex items-center gap-2 pt-2 hidden-el" id="rememberBox"><div class="w-5 h-5 rounded-full bg-[#F3C326] text-white flex items-center justify-center text-xs"><i class="fas fa-check"></i></div><span class="text-gray-500 text-sm">Remember password</span></div>
+
+                <button onclick="handleAuth()" id="authBtn" class="w-full bg-[#F3C326] text-white font-bold py-3.5 rounded-full mt-6 shadow-md text-lg active:scale-95 transition">Log in</button>
+                <div class="text-center mt-4"><button onclick="toggleAuth(authMode === 'login' ? 'reg' : 'login')" id="authSwitchBtn" class="text-[#F3C326] font-bold border border-[#F3C326] bg-white px-8 py-3.5 rounded-full text-sm w-full">Register</button></div>
+            </div>
+            
+            <div class="flex justify-between items-center mt-8 px-4 text-sm text-gray-500 font-medium">
+                <div class="flex flex-col items-center gap-1 cursor-pointer"><i class="fas fa-lock text-[#F3C326] text-xl"></i> Forgot password</div>
+                <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="openCsChat()"><i class="fas fa-headset text-[#F3C326] text-xl"></i> Customer Service</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="mainContent" class="hidden-el">
+        <header class="bg-white px-4 py-3 flex justify-between items-center sticky top-0 z-40 border-b border-gray-100 shadow-sm">
+            <h1 class="text-xl font-black italic text-[#F3C326]">MK WIN 25</h1>
+            <div class="flex gap-4 text-gray-400 text-lg">
+                <i class="fas fa-download cursor-pointer hover:text-[#F3C326] transition"></i>
+                <i class="fas fa-headset cursor-pointer hover:text-[#F3C326] transition" onclick="openCsChat()"></i>
+            </div>
+        </header>
+
+        <!-- HOME -->
+        <div id="page-home" class="page-sec bg-white">
+            <div class="p-3">
+                <!-- BANNER SLIDER CONTAINER -->
+                <div class="w-full h-40 rounded-xl bg-gray-200 mb-3 relative overflow-hidden shadow-sm" id="homeBannerSliderContainer">
+                    <img id="slide-img-0" src="https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=800&q=80" class="slider-img opacity-100">
+                </div>
+
+                <div class="bg-white rounded-full px-4 py-2 flex items-center gap-3 mb-4 shadow-sm border border-gray-100">
+                    <i class="fas fa-bullhorn text-[#F3C326] text-sm"></i><marquee class="text-xs text-gray-600 font-medium">Welcome to MK WIN 25. The Most Trusted & Premium Gaming Platform.</marquee>
+                </div>
+                
+                <div class="grid grid-cols-4 text-center gap-2 mb-6 px-1">
+                    <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-105 transition"><div class="w-12 h-12 bg-white rounded-xl text-gray-600 flex items-center justify-center text-xl shadow-sm"><i class="fas fa-th-large"></i></div><span class="text-[11px] text-gray-600 font-bold">All</span></div>
+                    <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-105 transition"><div class="w-12 h-12 bg-white rounded-xl text-green-500 flex items-center justify-center text-xl shadow-sm"><i class="fas fa-gamepad"></i></div><span class="text-[11px] text-gray-600 font-bold">Slots</span></div>
+                    <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-105 transition"><div class="w-12 h-12 bg-[#F3C326] rounded-xl text-white flex items-center justify-center text-xl shadow-md"><i class="fas fa-money-bill-wave"></i></div><span class="text-[11px] text-gray-800 font-bold">Lottery</span></div>
+                    <div class="flex flex-col items-center gap-1 cursor-pointer hover:scale-105 transition"><div class="w-12 h-12 bg-white rounded-xl text-blue-500 flex items-center justify-center text-xl shadow-sm"><i class="fas fa-futbol"></i></div><span class="text-[11px] text-gray-600 font-bold">Sports</span></div>
+                </div>
+
+                <div class="flex items-center gap-2 mb-3 px-1">
+                    <div class="w-1 h-4 bg-[#F3C326] rounded-full"></div><h3 class="text-[15px] font-bold text-gray-800">Lottery</h3>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-6 px-1">
+                    <div onclick="openGame()" class="relative rounded-xl overflow-hidden cursor-pointer shadow-sm h-36 p-4 bg-green-500 transition-transform hover:-translate-y-1">
+                        <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-white/20 rounded-full blur-xl"></div>
+                        <i class="fas fa-gem absolute right-3 top-3 text-white/30 text-4xl"></i>
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div class="text-white">
+                                <h3 class="font-black text-xl">WINGO</h3>
+                                <p class="text-[10px] opacity-90 mt-1 font-medium">Play & Win Big</p>
+                            </div>
+                            <div class="flex gap-1">
+                                <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold shadow-sm">1</div>
+                                <div class="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center text-white text-[10px] font-bold shadow-sm">5</div>
+                                <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold shadow-sm">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div onclick="alert('Coming Soon')" class="relative rounded-xl overflow-hidden cursor-pointer shadow-sm h-36 p-4 bg-blue-500 transition-transform hover:-translate-y-1">
+                        <i class="fas fa-dice absolute right-3 top-3 text-white/30 text-4xl"></i>
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div class="text-white">
+                                <h3 class="font-black text-xl">K3 LOTTERY</h3>
+                                <p class="text-[10px] opacity-90 mt-1 font-medium">Dice Game</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6 mt-4">
+                    <div class="flex items-center gap-2 mb-3 px-1"><div class="w-1 h-4 bg-[#F3C326] rounded-full"></div><h3 class="text-[15px] font-bold text-gray-800">Winning information</h3></div>
+                    <div class="premium-card overflow-hidden relative h-[250px]"><div id="liveWinningFeed" class="absolute w-full flex flex-col transition-all duration-500"></div></div>
+                </div>
+
+                <div class="mb-4 mt-6">
+                    <div class="flex items-center gap-2 mb-3 px-1"><div class="w-1 h-4 bg-[#F3C326] rounded-full"></div><h3 class="text-[15px] font-bold text-gray-800">Today's earnings chart</h3></div>
+                    <div id="dailyLeaderboardList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY TAB -->
+        <div id="page-activity" class="page-sec hidden-el pb-24 bg-[#f4f5f8]">
+            <div class="bg-[#F3C326] p-4 text-center sticky top-0 z-20">
+                <h2 class="font-bold text-white text-lg">Activity Center</h2>
+            </div>
+            <div class="bg-[#F3C326] px-6 pb-8 pt-4 text-white flex justify-between text-center shadow-sm rounded-b-3xl">
+                <div class="flex-1">
+                    <p class="text-xs opacity-90 mb-1 font-medium">Today's bonus</p>
+                    <p class="text-2xl font-bold">৳<span id="actTodayBonus">0.00</span></p>
+                </div>
+                <div class="w-px bg-white/30 my-2"></div>
+                <div class="flex-1">
+                    <p class="text-xs opacity-90 mb-1 font-medium">Total bonus</p>
+                    <p class="text-2xl font-bold">৳<span id="actTotalBonus">0.00</span></p>
+                </div>
+            </div>
+            
+            <div class="flex justify-center -mt-5 mb-4 relative z-10">
+                <button class="bg-white text-[#F3C326] px-8 py-2 rounded-full font-bold text-sm shadow-md border border-gray-100">Bonus details</button>
+            </div>
+
+            <!-- Icon Grid -->
+            <div class="px-4 mt-6 mb-4">
+                <div class="grid grid-cols-4 gap-2 bg-white py-5 rounded-xl shadow-sm premium-card">
+                    <div class="flex flex-col items-center gap-2 cursor-pointer" onclick="openAwardModal()">
+                        <div class="w-12 h-12 rounded-xl bg-red-50 text-red-400 flex justify-center items-center text-2xl"><i class="fas fa-medal"></i></div>
+                        <span class="text-[10px] text-gray-600 font-bold text-center leading-tight">Activity<br>Award</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 cursor-pointer" onclick="openRebateModal()">
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex justify-center items-center text-2xl"><i class="fas fa-hand-holding-usd"></i></div>
+                        <span class="text-[10px] text-gray-600 font-bold text-center leading-tight">Betting<br>rebate</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 cursor-pointer" onclick="openNotifModal('Super Jackpot')">
+                        <div class="w-12 h-12 rounded-xl bg-green-50 text-green-400 flex justify-center items-center text-2xl"><i class="fas fa-trophy"></i></div>
+                        <span class="text-[10px] text-gray-600 font-bold text-center leading-tight">Super<br>Jackpot</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 cursor-pointer" onclick="switchTab('gift')">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-400 flex justify-center items-center text-2xl"><i class="fas fa-gift"></i></div>
+                        <span class="text-[10px] text-gray-600 font-bold text-center leading-tight">Invite<br>Wheel</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banners Box -->
+            <div class="px-4 grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm cursor-pointer pb-2 premium-card" onclick="switchTab('gift')">
+                    <div class="bg-gradient-to-br from-red-400 to-red-500 h-24 p-3 relative flex justify-end flex-col">
+                        <i class="fas fa-gift absolute right-2 top-2 text-white/30 text-4xl"></i>
+                    </div>
+                    <div class="p-2 text-center">
+                        <h3 class="font-bold text-sm text-gray-800">Gifts</h3>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm cursor-pointer pb-2 premium-card" onclick="openRebateModal()">
+                    <div class="bg-gradient-to-br from-blue-400 to-cyan-500 h-24 p-3 relative flex justify-end flex-col">
+                        <i class="fas fa-calendar-check absolute right-2 top-2 text-white/30 text-4xl"></i>
+                    </div>
+                    <div class="p-2 text-center">
+                        <h3 class="font-bold text-sm text-gray-800">Attendance</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMOTION -->
+        <div id="page-promotion" class="page-sec hidden-el bg-[#f4f5f8]">
+            <div class="bg-white p-4 flex items-center justify-center shadow-sm sticky top-0 z-20 border-b border-gray-100">
+                <h2 class="font-bold text-gray-800 text-lg">Agency</h2>
+            </div>
+            
+            <div class="bg-[#F3C326] p-6 pb-12 text-center text-white rounded-b-3xl shadow-sm">
+                <h3 class="text-4xl font-bold mb-2" id="yesterdayComm">0.00</h3>
+                <div class="bg-white text-[#F3C326] text-[11px] font-bold px-4 py-1.5 rounded-full inline-block mb-2 shadow-sm">Yesterday's total commission</div>
+                <p class="text-xs opacity-90 font-medium">Upgrade the level to increase commission income</p>
+            </div>
+                
+            <div class="px-4 pb-24 -mt-6 relative z-10">
+                <div class="bg-white rounded-xl mb-4 overflow-hidden shadow-sm premium-card">
+                    <div class="flex text-center text-[12px] font-bold border-b border-gray-100">
+                        <div class="flex-1 py-3 text-[#F3C326] cursor-pointer border-b-2 border-[#F3C326]" id="promo-tab-direct" onclick="togglePromoTab('direct')">Direct subordinates</div>
+                        <div class="flex-1 py-3 text-gray-500 bg-gray-50 cursor-pointer border-b-2 border-transparent" id="promo-tab-team" onclick="togglePromoTab('team')">Team subordinates</div>
+                    </div>
+                    
+                    <div id="promo-content-direct" class="p-4 grid grid-cols-2 gap-y-5 gap-x-2 text-center text-sm">
+                        <div><div class="text-gray-800 font-bold text-lg" id="st_dir_reg">0</div><div class="text-[10px] text-gray-500 font-medium">Number of register</div></div>
+                        <div><div class="text-green-500 font-bold text-lg" id="st_dir_depNum">0</div><div class="text-[10px] text-gray-500 font-medium">Deposit number</div></div>
+                        <div><div class="text-red-500 font-bold text-lg" id="st_dir_depAmt">0</div><div class="text-[10px] text-gray-500 font-medium">Deposit amount</div></div>
+                        <div><div class="text-blue-500 font-bold text-lg">0</div><div class="text-[10px] text-gray-500 font-medium">First deposits</div></div>
+                    </div>
+                    
+                    <div id="promo-content-team" class="hidden-el p-4 grid grid-cols-2 gap-y-5 gap-x-2 text-center text-sm">
+                        <div><div class="text-gray-800 font-bold text-lg" id="st_team_reg">0</div><div class="text-[10px] text-gray-500 font-medium">Number of register</div></div>
+                        <div><div class="text-green-500 font-bold text-lg" id="st_team_depNum">0</div><div class="text-[10px] text-gray-500 font-medium">Deposit number</div></div>
+                        <div><div class="text-red-500 font-bold text-lg" id="st_team_depAmt">0</div><div class="text-[10px] text-gray-500 font-medium">Deposit amount</div></div>
+                        <div><div class="text-blue-500 font-bold text-lg">0</div><div class="text-[10px] text-gray-500 font-medium">First deposits</div></div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-[#F3C326] text-white font-bold py-3.5 rounded-full shadow-md mb-5 text-sm active:scale-95 transition">Download QR Code</button>
+
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-5 premium-card">
+                    <div class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-100 hover:bg-gray-50" onclick="copyRefLink()">
+                        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded bg-yellow-50 flex justify-center items-center text-[#F3C326] text-lg"><i class="fas fa-envelope-open-text"></i></div><span class="text-gray-700 text-sm font-bold">Copy invitation code</span></div>
+                        <div class="flex items-center gap-2"><span class="text-xs text-gray-500 font-mono" id="myInviteCodeTextSmall">...</span><i class="far fa-copy text-gray-400"></i></div>
+                    </div>
+                    <div class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-100 hover:bg-gray-50" onclick="openSubordinateModal()">
+                        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded bg-yellow-50 flex justify-center items-center text-[#F3C326] text-lg"><i class="fas fa-users"></i></div><span class="text-gray-700 text-sm font-bold">Subordinate data</span></div><i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    <div class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-100 hover:bg-gray-50" onclick="openCommissionDetail()">
+                        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded bg-yellow-50 flex justify-center items-center text-[#F3C326] text-lg"><i class="fas fa-hand-holding-usd"></i></div><span class="text-gray-700 text-sm font-bold">Commission detail</span></div><i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    <div class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50">
+                        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded bg-yellow-50 flex justify-center items-center text-[#F3C326] text-lg"><i class="fas fa-book"></i></div><span class="text-gray-700 text-sm font-bold">Invitation rules</span></div><i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm text-center premium-card">
+                    <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-3 justify-center">
+                        <i class="fas fa-chart-pie text-[#F3C326] text-lg"></i><span class="font-bold text-gray-800 text-sm uppercase tracking-wide">Promotion Data</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-5 gap-x-2">
+                        <div><div class="text-lg font-bold text-gray-800" id="promo-this-week">0.00</div><div class="text-[10px] text-gray-500 font-medium">This Week</div></div>
+                        <div><div class="text-lg font-bold text-gray-800" id="promo-total-comm">0.00</div><div class="text-[10px] text-gray-500 font-medium">Total commission</div></div>
+                        <div><div class="text-lg font-bold text-gray-800" id="promo-dir-sub">0</div><div class="text-[10px] text-gray-500 font-medium">Direct subordinate</div></div>
+                        <div><div class="text-lg font-bold text-gray-800" id="promo-total-sub">0</div><div class="text-[10px] text-gray-500 font-medium">Total subordinates</div></div>
+                    </div>
+                </div>
+            </div>
+            <input type="text" id="referralLink" class="hidden-el">
+        </div>
+
+        <!-- ACCOUNT SECTION -->
+        <div id="page-account" class="page-sec hidden-el pb-24 bg-[#f4f5f8]">
+            <div class="bg-[#F3C326] p-6 pb-12 text-white rounded-b-3xl shadow-sm">
+                <div class="flex items-center gap-4 pt-2">
+                    <div onclick="openAvatarModal()" class="relative cursor-pointer">
+                        <img id="profileAvatarImg" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-16 h-16 rounded-full border-2 border-white/50 object-cover bg-white shadow-sm">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h2 class="text-lg font-bold" id="profilePhone">...</h2>
+                            <span class="bg-white text-gray-800 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fas fa-star text-[8px] text-[#F3C326]"></i> VIP1</span>
+                        </div>
+                        <div class="text-[11px] opacity-90 mb-1 flex items-center gap-2 bg-black/10 px-2 py-0.5 w-fit rounded-full font-mono">
+                            UID | <span id="profileUID">...</span> <i class="far fa-copy cursor-pointer active:scale-90 ml-1" onclick="navigator.clipboard.writeText(document.getElementById('profileUID').innerText); alert('Copied');"></i>
+                        </div>
+                        <p class="text-[10px] opacity-80 font-medium">Last login: <span id="profileLastLogin">Just now</span></p>
+                    </div>
+                    <i class="fas fa-cog text-white/90 text-xl cursor-pointer hover:text-white transition hover:rotate-90" onclick="openSettingsModal()"></i>
+                </div>
+            </div>
+
+            <div class="-mt-8 mx-4 bg-white rounded-xl shadow-sm relative z-20 mb-4 p-5 premium-card">
+                <p class="text-gray-500 text-xs mb-1 font-medium">Total balance</p>
+                <h2 class="text-3xl font-black text-gray-800 flex items-center gap-2 mb-4 border-b border-gray-100 pb-4">৳<span class="userBalance">0.00</span> <i onclick="refreshBalance()" class="fas fa-sync-alt text-gray-400 text-sm cursor-pointer transition active:rotate-180 hover:text-[#F3C326]"></i></h2>
+                
+                <div class="grid grid-cols-4 text-center">
+                    <div onclick="switchTab('wallet'); setWalletTab('deposit')" class="flex flex-col items-center gap-1.5 cursor-pointer hover:opacity-80">
+                        <div class="text-2xl text-red-400"><i class="fas fa-wallet"></i></div>
+                        <span class="text-xs text-gray-600 font-medium">Wallet</span>
+                    </div>
+                    <div onclick="switchTab('wallet'); setWalletTab('deposit')" class="flex flex-col items-center gap-1.5 cursor-pointer hover:opacity-80">
+                        <div class="text-2xl text-orange-400"><i class="fas fa-arrow-circle-down"></i></div>
+                        <span class="text-xs text-gray-600 font-medium">Deposit</span>
+                    </div>
+                    <div onclick="switchTab('wallet'); setWalletTab('withdraw')" class="flex flex-col items-center gap-1.5 cursor-pointer hover:opacity-80">
+                        <div class="text-2xl text-blue-400"><i class="fas fa-arrow-circle-up"></i></div>
+                        <span class="text-xs text-gray-600 font-medium">Withdraw</span>
+                    </div>
+                    <div onclick="alert('VIP System coming soon!')" class="flex flex-col items-center gap-1.5 cursor-pointer hover:opacity-80">
+                        <div class="text-2xl text-green-400"><i class="fas fa-gem"></i></div>
+                        <span class="text-xs text-gray-600 font-medium">VIP</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Safe Box Row -->
+            <div class="px-4 mb-4">
+                <div onclick="openSafeBoxModal()" class="bg-white p-4 rounded-xl shadow-sm flex items-center justify-between cursor-pointer premium-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-yellow-50 text-[#F3C326] flex items-center justify-center text-xl"><i class="fas fa-vault"></i></div>
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800">Safe</h3>
+                            <p class="text-[10px] text-gray-400 mt-0.5 leading-tight">Daily interest 0.1%, secure your funds</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <span class="bg-[#F3C326] text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">৳<span class="safeBoxBalanceDisplay">0.00</span></span>
+                        <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List Menu Grid -->
+            <div class="px-4 grid grid-cols-2 gap-3 mb-4">
+                <div onclick="openHistoryModalFull('Game History')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer premium-card">
+                    <div class="text-blue-500 text-2xl"><i class="fas fa-file-invoice"></i></div>
+                    <div><h3 class="text-sm font-bold text-gray-700">Game History</h3><p class="text-[10px] text-gray-400">My game history</p></div>
+                </div>
+                <div onclick="openHistoryModalFull('Transactions')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer premium-card">
+                    <div class="text-green-500 text-2xl"><i class="fas fa-exchange-alt"></i></div>
+                    <div><h3 class="text-sm font-bold text-gray-700">Transaction</h3><p class="text-[10px] text-gray-400">My transaction</p></div>
+                </div>
+                <div onclick="showHistoryModal('Deposit')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer premium-card">
+                    <div class="text-red-400 text-2xl"><i class="fas fa-file-download"></i></div>
+                    <div><h3 class="text-sm font-bold text-gray-700">Deposit</h3><p class="text-[10px] text-gray-400">My deposit history</p></div>
+                </div>
+                <div onclick="showHistoryModal('Withdraw')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer premium-card">
+                    <div class="text-orange-400 text-2xl"><i class="fas fa-file-upload"></i></div>
+                    <div><h3 class="text-sm font-bold text-gray-700">Withdraw</h3><p class="text-[10px] text-gray-400">My withdraw history</p></div>
+                </div>
+            </div>
+
+            <!-- Bottom Menu List -->
+            <div class="px-4 mb-6">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden premium-card">
+                    <div onclick="openSystemNotificationModal()" class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-100 hover:bg-gray-50">
+                        <div class="flex items-center gap-3"><div class="text-yellow-400 text-lg w-6 text-center"><i class="fas fa-envelope"></i></div><span class="text-sm text-gray-700 font-bold">Notification</span></div>
+                        <div class="flex items-center gap-2"><span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full" id="notifBadge">0</span><i class="fas fa-chevron-right text-gray-300"></i></div>
+                    </div>
+                    <div onclick="switchTab('gift')" class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-100 hover:bg-gray-50">
+                        <div class="flex items-center gap-3"><div class="text-yellow-400 text-lg w-6 text-center"><i class="fas fa-gift"></i></div><span class="text-sm text-gray-700 font-bold">Gifts</span></div>
+                        <i class="fas fa-chevron-right text-gray-300"></i>
+                    </div>
+                    <div class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-100 hover:bg-gray-50">
+                        <div class="flex items-center gap-3"><div class="text-yellow-400 text-lg w-6 text-center"><i class="fas fa-chart-bar"></i></div><span class="text-sm text-gray-700 font-bold">Game statistics</span></div>
+                        <i class="fas fa-chevron-right text-gray-300"></i>
+                    </div>
+                    <div class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50">
+                        <div class="flex items-center gap-3"><div class="text-yellow-400 text-lg w-6 text-center"><i class="fas fa-globe"></i></div><span class="text-sm text-gray-700 font-bold">Language</span></div>
+                        <div class="flex items-center gap-2"><span class="text-xs text-gray-500 font-medium">English</span><i class="fas fa-chevron-right text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="px-4 text-center">
+                <button onclick="logout()" class="w-full max-w-[200px] border border-[#F3C326] text-[#F3C326] py-3 rounded-full text-sm font-bold hover:bg-yellow-50 transition mb-8 flex justify-center items-center gap-2 mx-auto"><i class="fas fa-power-off"></i> Log out</button>
+            </div>
+        </div>
+
+        <!-- WALLET PAGE -->
+        <div id="page-wallet" class="page-sec hidden-el pb-24 bg-[#f4f5f8]">
+            <div class="bg-white p-4 flex items-center justify-center shadow-sm sticky top-0 z-20 border-b border-gray-100">
+                <h2 class="font-bold text-gray-800 text-lg">Wallet</h2>
+            </div>
+            <div class="bg-[#F3C326] p-8 text-center text-white relative shadow-sm">
+                <p class="text-sm mb-1 opacity-90 font-medium">Total balance</p>
+                <h2 class="text-4xl font-black mb-6 flex items-center justify-center gap-2">৳ <span class="userBalance">0.00</span></h2>
+                <div class="flex bg-white/20 p-1 rounded-lg max-w-[250px] mx-auto shadow-inner">
+                    <button onclick="setWalletTab('deposit')" id="wTab-deposit" class="flex-1 py-2 rounded text-sm transition-all bg-white text-[#F3C326] font-bold shadow-sm">Deposit</button>
+                    <button onclick="setWalletTab('withdraw')" id="wTab-withdraw" class="flex-1 py-2 rounded text-sm transition-all text-white font-medium hover:text-white">Withdraw</button>
+                </div>
+            </div>
+
+            <!-- Deposit -->
+            <div id="view-deposit" class="px-4 py-6">
+                <div class="flex justify-between items-center mb-4"><p class="text-sm font-bold text-gray-800 border-l-4 border-[#F3C326] pl-2">Deposit Methods</p><button onclick="showHistoryModal('Deposit')" class="text-xs text-gray-500 font-bold hover:text-[#F3C326] transition flex items-center gap-1"><i class="fas fa-history"></i> History</button></div>
+                
+                <div class="flex gap-3 mb-6 overflow-x-auto pb-2 no-scrollbar">
+                    <div onclick="selectTopMethod('Nagad')" id="top-m-Nagad" class="min-w-[100px] h-[85px] bg-white border border-gray-200 rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer transition shadow-sm premium-card">
+                        <img id="logo-Nagad-img" src="" class="max-w-full max-h-[35px] object-contain hidden mb-2">
+                        <svg id="logo-Nagad-svg" class="w-8 h-8 mb-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="15" fill="#ED1C24"/><path d="M50 20 A30 30 0 1 1 20 50" fill="none" stroke="#F7931E" stroke-width="12" stroke-linecap="round"/><path d="M50 35 A15 15 0 1 1 35 50" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#F7931E"/></svg>
+                        <span class="text-xs font-bold text-gray-700">Nagad</span>
+                    </div>
+                    <div onclick="selectTopMethod('Bkash')" id="top-m-Bkash" class="min-w-[100px] h-[85px] bg-white border-2 border-[#F3C326] bg-yellow-50/50 rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer relative top-method-active transition shadow-sm premium-card">
+                        <img id="logo-Bkash-img" src="" class="max-w-full max-h-[35px] object-contain hidden mb-2">
+                        <svg id="logo-Bkash-svg" class="w-8 h-8 mb-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="15" fill="#E2136E"/><polygon points="25,35 50,55 25,75" fill="#FFFFFF"/><polygon points="50,55 75,35 100,55 75,75" fill="#FFFFFF"/></svg>
+                        <span class="text-xs font-bold text-gray-700">bKash</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm mb-6 premium-card"><p class="text-xs font-bold text-gray-600 mb-3">Select Channel</p><div class="grid grid-cols-2 gap-3" id="channelGrid"></div></div>
+                <div class="bg-white p-4 rounded-xl shadow-sm mb-6 premium-card">
+                    <p class="text-xs font-bold text-gray-600 mb-3">Deposit Amount</p>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <button onclick="setDepAmount(300)" id="amt-btn-300" class="amt-btn py-2.5 rounded border text-sm font-bold transition">৳ 300</button>
+                        <button onclick="setDepAmount(500)" id="amt-btn-500" class="amt-btn py-2.5 rounded border text-sm font-bold transition amt-btn-active bg-yellow-50 text-[#F3C326] border-[#F3C326]">৳ 500</button>
+                        <button onclick="setDepAmount(1000)" id="amt-btn-1000" class="amt-btn py-2.5 rounded border text-sm font-bold transition">৳ 1K</button>
+                        <button onclick="setDepAmount(2000)" id="amt-btn-2000" class="amt-btn py-2.5 rounded border text-sm font-bold transition">৳ 2K</button>
+                        <button onclick="setDepAmount(10000)" id="amt-btn-10000" class="amt-btn py-2.5 rounded border text-sm font-bold transition">৳ 10K</button>
+                        <button onclick="setDepAmount(25000)" id="amt-btn-25000" class="amt-btn py-2.5 rounded border text-sm font-bold transition">৳ 25K</button>
+                    </div>
+                    <div class="relative"><span class="absolute left-4 top-3.5 text-[#F3C326] font-bold">৳</span><input type="number" id="newDepAmountInput" value="500" oninput="removeActiveAmtBtn()" placeholder="100.00 - 25,000.00" class="w-full p-3 pl-8 rounded bg-gray-50 border border-gray-200 text-gray-800 font-bold text-lg focus:border-[#F3C326] shadow-inner"><i class="fas fa-times-circle absolute right-4 top-4 text-gray-300 cursor-pointer hover:text-gray-500 transition" onclick="document.getElementById('newDepAmountInput').value=''; removeActiveAmtBtn();"></i></div>
+                </div>
+                <div class="flex flex-col gap-4 mb-6">
+                    <button onclick="initiateDeposit()" class="w-full bg-[#F3C326] text-white font-bold py-3.5 rounded-full shadow-md active:scale-95 transition text-base tracking-wide">Deposit</button>
+                </div>
+            </div>
+
+            <!-- Withdraw -->
+            <div id="view-withdraw" class="hidden-el px-4 py-6">
+                <div class="flex justify-between items-center mb-4"><p class="text-sm font-bold text-gray-800 border-l-4 border-[#F3C326] pl-2">Withdraw Info</p><button onclick="showHistoryModal('Withdraw')" class="text-xs text-gray-500 font-bold hover:text-[#F3C326] transition flex items-center gap-1"><i class="fas fa-history"></i> History</button></div>
+                
+                <div onclick="checkAndShowBindWallet()" class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center mb-6 cursor-pointer border border-transparent hover:border-[#F3C326] transition premium-card">
+                    <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center text-[#F3C326] text-xl shadow-inner"><i class="fas fa-credit-card"></i></div><div><div class="text-sm font-bold text-gray-800" id="boundWalletType">Select Wallet</div><div class="text-xs text-gray-500 mt-0.5 font-medium" id="boundWalletNum">Tap to bind account</div></div></div><i class="fas fa-chevron-right text-gray-300"></i>
+                </div>
+                
+                <div class="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-100 premium-card">
+                    <div class="flex justify-between text-xs mb-2"><span class="text-gray-500 font-bold">Wager Requirement</span><div id="turnoverStatusText" class="font-bold text-gray-500">Checking...</div></div>
+                    <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden shadow-inner"><div id="turnoverProgressBar" class="h-full bg-red-500 transition-all duration-500" style="width: 0%"></div></div>
+                    <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-medium"><span>Needed: <span id="wagerNeededDisplay" class="text-gray-700 font-bold">৳0</span></span></div>
+                </div>
+                
+                <div class="relative mb-4"><span class="absolute left-4 top-3.5 text-[#F3C326] font-bold text-lg">৳</span><input type="number" id="newWithAmountInput" placeholder="Withdraw Amount (Min 500)" class="w-full p-3.5 pl-9 rounded bg-white border border-gray-200 text-gray-800 font-bold text-lg focus:border-[#F3C326] shadow-sm"></div>
+                <input type="password" id="newWithPassInput" placeholder="Login Password" class="w-full p-3.5 rounded bg-white border border-gray-200 text-gray-800 font-bold mb-6 focus:border-[#F3C326] shadow-sm">
+                <button onclick="initiateWithdraw()" class="w-full bg-[#F3C326] text-white py-3.5 rounded-full font-bold shadow-md active:scale-95 transition text-base tracking-wide">Withdraw</button>
+            </div>
+        </div>
+
+        <!-- GIFT CODE PAGE -->
+        <div id="page-gift" class="page-sec hidden-el bg-[#f4f5f8] min-h-screen">
+            <div class="bg-white p-4 flex items-center shadow-sm sticky top-0 z-20 border-b border-gray-100 mb-4">
+                <i onclick="switchTab('account')" class="fas fa-angle-left text-gray-800 text-2xl px-2 cursor-pointer"></i>
+                <h2 class="font-bold text-gray-800 text-lg flex-1 text-center pr-6">Gifts</h2>
+            </div>
+            
+            <div class="px-4 pb-24">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 premium-card">
+                    <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80" class="w-full h-40 object-cover opacity-90">
+                    <div class="p-5">
+                        <p class="text-gray-500 text-sm mb-4 font-medium">Enter the redemption code to receive gift rewards</p>
+                        <input type="text" id="giftInputCode" class="w-full p-3.5 rounded bg-gray-50 border border-gray-200 font-bold mb-4 focus:border-[#F3C326] shadow-inner" placeholder="Please enter gift code">
+                        <button onclick="redeemGift()" class="w-full bg-[#F3C326] text-white py-3.5 rounded-full font-bold shadow-sm active:scale-95 transition">Receive</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-4 premium-card">
+                    <h3 class="text-sm font-bold text-gray-700 mb-3 border-b border-gray-100 pb-2"><i class="fas fa-history text-gray-400 mr-1"></i> History</h3>
+                    <div id="giftHistoryList" class="space-y-3 pb-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="fixed bottom-0 w-full max-w-[480px] bg-white border-t border-gray-200 h-16 flex justify-around items-center z-50">
+            <button onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-gray-400 nav-btn nav-active transition-colors" id="nav-home"><i class="fas fa-home text-xl mb-0.5"></i><span class="text-[10px] font-bold">Home</span></button>
+            <button onclick="switchTab('activity')" class="flex flex-col items-center gap-1 text-gray-400 nav-btn transition-colors" id="nav-activity"><i class="fas fa-store text-xl mb-0.5"></i><span class="text-[10px] font-bold">Activity</span></button>
+            <button onclick="switchTab('promotion')" class="relative -top-5 group">
+                <div class="w-14 h-14 rounded-full bg-[#F3C326] flex items-center justify-center border-4 border-[#f4f5f8] text-white shadow-md transform group-active:scale-95 transition">
+                    <i class="fas fa-gem text-2xl"></i>
+                </div>
+                <span class="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[10px] font-bold text-gray-500 w-full text-center">Promotion</span>
+            </button>
+            <button onclick="switchTab('wallet')" class="flex flex-col items-center gap-1 text-gray-400 nav-btn transition-colors" id="nav-wallet"><i class="fas fa-wallet text-xl mb-0.5"></i><span class="text-[10px] font-bold">Wallet</span></button>
+            <button onclick="switchTab('account')" class="flex flex-col items-center gap-1 text-gray-400 nav-btn transition-colors" id="nav-account"><i class="fas fa-user text-xl mb-0.5"></i><span class="text-[10px] font-bold">Account</span></button>
+        </nav>
+    </div>
+
+    <!-- GAME PAGE (WinGo) -->
+    <div id="gamePage" class="hidden-el fixed inset-0 bg-gray-900 z-[100] overflow-y-auto max-w-[480px] mx-auto pb-10">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none"></div>
+        <div class="casino-dark-gradient p-3 flex justify-between items-center sticky top-0 z-30 shadow-[0_10px_20px_rgba(0,0,0,0.3)] border-b border-gray-200 text-gray-800">
+            <div class="flex items-center gap-2">
+                <i onclick="closeGame()" class="fas fa-chevron-left p-2 cursor-pointer text-[#F3C326] text-lg hover:scale-110 transition"></i>
+                <h2 class="font-black italic text-xl drop-shadow-sm text-[#F3C326]">MK WIN 25</h2>
+            </div>
+            <div class="flex gap-4 items-center pr-2 text-xl text-[#F3C326]">
+                <i class="fas fa-headset cursor-pointer hover:text-gray-800 transition hover:scale-110" onclick="openCsChat()"></i>
+                <i id="soundToggleBtn" onclick="toggleSound()" class="fas fa-volume-up cursor-pointer hover:text-gray-800 transition hover:scale-110"></i>
+            </div>
+        </div>
+        
+        <div class="p-4 relative z-10">
+            <!-- Balance Card -->
+            <div class="bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.2)] p-5 mb-4 text-center">
+                <p class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-1 flex justify-center items-center gap-1"><i class="fas fa-wallet text-[#F3C326]"></i> Wallet Balance</p>
+                <h2 class="text-3xl font-black text-gray-800 mb-4 drop-shadow-sm">৳ <span class="userBalance">0.00</span> <i onclick="refreshBalance()" class="fas fa-sync-alt text-gray-400 text-sm cursor-pointer ml-1 hover:text-[#F3C326] transition hover:rotate-180"></i></h2>
+                <div class="flex gap-3">
+                    <button onclick="closeGame(); switchTab('wallet'); setWalletTab('withdraw');" class="flex-1 bg-gray-200 text-gray-700 border border-gray-300 py-3 rounded-xl font-black text-sm uppercase tracking-wider hover:bg-gray-300 transition shadow-inner">Withdraw</button>
+                    <button onclick="closeGame(); switchTab('wallet'); setWalletTab('deposit');" class="flex-1 casino-gradient text-white py-3 rounded-xl font-black text-sm uppercase tracking-wider shadow-[0_4px_15px_rgba(243,195,38,0.4)] hover:scale-105 transition transform">Deposit</button>
+                </div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-inner border border-white/20 flex mb-4 p-1">
+                <button onclick="switchMarket('30s')" id="market-btn-30s" class="flex-1 py-2 rounded-lg market-btn market-btn-active"><i class="far fa-clock text-lg mb-1"></i> WinGo 30s</button>
+                <button onclick="switchMarket('1m')" id="market-btn-1m" class="flex-1 py-2 rounded-lg market-btn text-gray-500"><i class="far fa-clock text-lg mb-1"></i> WinGo 1M</button>
+                <button onclick="switchMarket('3m')" id="market-btn-3m" class="flex-1 py-2 rounded-lg market-btn text-gray-500"><i class="far fa-clock text-lg mb-1"></i> WinGo 3M</button>
+                <button onclick="switchMarket('5m')" id="market-btn-5m" class="flex-1 py-2 rounded-lg market-btn text-gray-500"><i class="far fa-clock text-lg mb-1"></i> WinGo 5M</button>
+            </div>
+
+            <div class="casino-gradient rounded-t-2xl p-5 flex justify-between shadow-[0_10px_25px_rgba(243,195,38,0.3)] text-white relative border-2 border-b-0 border-[#F3C326]/50 overflow-hidden">
+                <div class="w-1/2 border-r border-white/20 pr-3 relative z-10">
+                    <div class="border border-white/50 text-white rounded-full px-2 py-0.5 text-[9px] inline-flex items-center gap-1 font-black mb-2 uppercase tracking-wider bg-white/20 shadow-sm"><i class="fas fa-book"></i> How to play</div>
+                    <p class="text-sm font-black mb-3 tracking-wide drop-shadow-sm" id="winGoTitleDisplay">WinGo 30s</p>
+                    <div class="flex gap-1" id="recentBallsMini"></div>
+                </div>
+                <div class="w-1/2 pl-3 text-right flex flex-col justify-center items-end relative z-10">
+                    <p class="text-[10px] font-black mb-2 uppercase tracking-widest text-white drop-shadow-sm">Time Remaining</p>
+                    <div class="flex gap-1 text-2xl font-black items-center mb-2 drop-shadow-md">
+                        <span class="bg-white text-[#F3C326] w-7 h-10 rounded-lg flex items-center justify-center shadow-sm border border-white" id="t-min-1">0</span>
+                        <span class="bg-white text-[#F3C326] w-7 h-10 rounded-lg flex items-center justify-center shadow-sm border border-white" id="t-min-2">0</span>
+                        <span class="text-white font-bold">:</span>
+                        <span class="bg-white text-[#F3C326] w-7 h-10 rounded-lg flex items-center justify-center shadow-sm border border-white" id="t-sec-1">0</span>
+                        <span class="bg-white text-[#F3C326] w-7 h-10 rounded-lg flex items-center justify-center shadow-sm border border-white" id="t-sec-2">0</span>
+                    </div>
+                    <p id="periodId" class="text-[11px] font-mono font-black text-white/90 drop-shadow-sm">...</p>
+                </div>
+            </div>
+            
+            <div class="bg-white/90 backdrop-blur-md rounded-b-2xl p-5 mb-4 shadow-[0_15px_30px_rgba(0,0,0,0.2)] border border-t-0 border-white/20 relative overflow-hidden">
+                <div id="bettingLockOverlay" class="hidden-el absolute inset-0 bg-white/80 z-[100] flex items-center justify-center backdrop-blur-[3px]">
+                    <div class="flex gap-4">
+                        <div class="bg-[#F3C326] text-white text-8xl font-black rounded-2xl w-28 h-40 flex items-center justify-center shadow-[0_0_40px_rgba(243,195,38,0.6)] border-4 border-white countdown-digit-lock" id="countdown-digit-1">0</div>
+                        <div class="bg-[#F3C326] text-white text-8xl font-black rounded-2xl w-28 h-40 flex items-center justify-center shadow-[0_0_40px_rgba(243,195,38,0.6)] border-4 border-white countdown-digit-lock" id="countdown-digit-2">5</div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mb-5">
+                    <button onclick="selectBet('Green')" class="flex-1 btn-green-glossy py-3.5 rounded-xl text-white font-black text-sm uppercase tracking-wider transition-transform active:scale-95">Green</button>
+                    <button onclick="selectBet('Violet')" class="flex-1 btn-violet-glossy py-3.5 rounded-xl text-white font-black text-sm uppercase tracking-wider transition-transform active:scale-95">Violet</button>
+                    <button onclick="selectBet('Red')" class="flex-1 btn-red-glossy py-3.5 rounded-xl text-white font-black text-sm uppercase tracking-wider transition-transform active:scale-95">Red</button>
+                </div>
+
+                <div class="bg-gray-100 rounded-2xl p-5 mb-5 border border-gray-200 shadow-inner">
+                    <div class="grid grid-cols-5 gap-y-5 gap-x-2">
+                        <button onclick="selectBet(0)" class="ball bg-0 hover:scale-105 transition-transform">0</button>
+                        <button onclick="selectBet(1)" class="ball bg-g hover:scale-105 transition-transform">1</button>
+                        <button onclick="selectBet(2)" class="ball bg-r hover:scale-105 transition-transform">2</button>
+                        <button onclick="selectBet(3)" class="ball bg-g hover:scale-105 transition-transform">3</button>
+                        <button onclick="selectBet(4)" class="ball bg-r hover:scale-105 transition-transform">4</button>
+                        <button onclick="selectBet(5)" class="ball bg-5 hover:scale-105 transition-transform">5</button>
+                        <button onclick="selectBet(6)" class="ball bg-r hover:scale-105 transition-transform">6</button>
+                        <button onclick="selectBet(7)" class="ball bg-g hover:scale-105 transition-transform">7</button>
+                        <button onclick="selectBet(8)" class="ball bg-r hover:scale-105 transition-transform">8</button>
+                        <button onclick="selectBet(9)" class="ball bg-g hover:scale-105 transition-transform">9</button>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 overflow-x-auto no-scrollbar mb-5 pb-1 text-xs">
+                    <button class="px-4 py-2 border border-[#F3C326] text-[#F3C326] rounded-lg font-black uppercase tracking-wider bg-transparent hover:bg-[#F3C326]/10 transition">Random</button>
+                    <button class="px-3 py-2 bg-[#F3C326] text-white rounded-lg font-black shadow-md hover:scale-105 transition">X1</button>
+                    <button class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg font-bold border border-gray-300 hover:bg-gray-300 transition">X5</button>
+                    <button class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg font-bold border border-gray-300 hover:bg-gray-300 transition">X10</button>
+                    <button class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg font-bold border border-gray-300 hover:bg-gray-300 transition">X20</button>
+                    <button class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg font-bold border border-gray-300 hover:bg-gray-300 transition">X50</button>
+                    <button class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg font-bold border border-gray-300 hover:bg-gray-300 transition">X100</button>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="selectBet('Big')" class="flex-1 bg-gradient-to-r from-orange-400 to-orange-500 text-white py-3.5 rounded-l-full rounded-r-sm font-black text-sm shadow-[0_6px_15px_rgba(249,115,22,0.4)] uppercase tracking-widest active:scale-95 transition-transform border border-orange-300/30">Big</button>
+                    <button onclick="selectBet('Small')" class="flex-1 bg-gradient-to-r from-blue-400 to-blue-500 text-white py-3.5 rounded-r-full rounded-l-sm font-black text-sm shadow-[0_6px_15px_rgba(59,130,246,0.4)] uppercase tracking-widest active:scale-95 transition-transform border border-blue-300/30">Small</button>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden mt-6">
+                <div class="flex text-center p-1.5 bg-gray-50 border-b border-gray-200">
+                    <button onclick="toggleGameTab('global')" id="tabGlobal" class="flex-1 py-3 bg-[#F3C326] text-white rounded-xl font-black text-xs uppercase tracking-wider shadow-sm transition">Game history</button>
+                    <button onclick="toggleGameTab('chart')" id="tabChart" class="flex-1 py-3 text-gray-500 bg-transparent font-bold text-xs uppercase tracking-wider transition hover:text-gray-800">Chart</button>
+                    <button onclick="toggleGameTab('personal')" id="tabPersonal" class="flex-1 py-3 text-gray-500 bg-transparent font-bold text-xs uppercase tracking-wider transition hover:text-gray-800">My history</button>
+                </div>
+                
+                <div id="globalHistoryContainer">
+                    <div class="bg-gray-50 p-3 flex justify-between text-[10px] text-gray-500 font-black uppercase tracking-widest text-center border-b border-gray-200"><div class="w-2/5 text-left pl-2">Period</div><div class="w-1/5">Number</div><div class="w-1/5">Size</div><div class="w-1/5">Color</div></div>
+                    <div id="globalHistory" class="bg-white"></div>
+                    <div class="flex justify-center items-center gap-4 py-4 text-gray-500 bg-white border-t border-gray-100 shadow-inner" id="globalPagination"><button onclick="changePage(-1)" class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition shadow-sm"><i class="fas fa-chevron-left"></i></button><span id="pageIndicator" class="text-sm font-black font-mono">1/50</span><button onclick="changePage(1)" class="w-10 h-10 rounded-lg bg-[#F3C326] text-white flex items-center justify-center shadow-md hover:scale-105 transition"><i class="fas fa-chevron-right"></i></button></div>
+                </div>
+
+                <div id="chartHistoryContainer" class="hidden-el">
+                    <div class="bg-white p-3 overflow-x-auto relative pb-6">
+                        <div id="chartStats" class="mb-4 text-[10px] text-gray-500 min-w-[320px]"></div>
+                        <div class="relative min-w-[320px] pb-4" id="chartDrawBox"><svg id="chartLineCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-10"></svg><div id="chartRows" class="relative z-20 space-y-2.5"></div></div>
+                    </div>
+                    <div class="flex justify-center items-center gap-4 py-4 text-gray-500 bg-white border-t border-gray-100 shadow-inner" id="chartPagination"><button onclick="changeChartPage(-1)" class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition shadow-sm"><i class="fas fa-chevron-left"></i></button><span id="chartPageIndicator" class="text-sm font-black font-mono">1/50</span><button onclick="changeChartPage(1)" class="w-10 h-10 rounded-lg bg-[#F3C326] text-white flex items-center justify-center shadow-md hover:scale-105 transition"><i class="fas fa-chevron-right"></i></button></div>
+                </div>
+
+                <div id="personalHistoryContainer" class="hidden-el p-3">
+                    <div id="personalHistory"></div>
+                    <div class="flex justify-center items-center gap-4 py-4 text-gray-500 hidden-el" id="personalPagination"><button onclick="changePersonalPage(-1)" class="w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 transition shadow-sm"><i class="fas fa-chevron-left"></i></button><span id="personalPageIndicator" class="text-sm font-black font-mono">1/50</span><button onclick="changePersonalPage(1)" class="w-10 h-10 rounded-lg bg-[#F3C326] text-white flex items-center justify-center shadow-md hover:scale-105 transition"><i class="fas fa-chevron-right"></i></button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+    <div id="subordinateModal" class="hidden-el fixed inset-0 bg-[#f4f5f8] z-[3000] overflow-y-auto flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto">
+        <div class="bg-white p-4 sticky top-0 z-20 shadow-sm flex items-center justify-between border-b border-gray-200">
+            <i onclick="hideModal('subordinateModal')" class="fas fa-angle-left text-gray-800 text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 class="text-lg font-black uppercase tracking-wider text-gray-800 absolute left-1/2 -translate-x-1/2 drop-shadow-sm">Subordinate Data</h2>
+            <div class="w-6"></div>
+        </div>
+        <div class="bg-white p-4 shadow-sm z-10 sticky top-[60px]">
+            <input type="date" id="subordinateDateFilter" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 outline-none focus:border-[#F3C326] mb-3" onchange="renderSubordinateList()">
+            <div class="flex text-center text-xs font-black uppercase tracking-wider rounded-lg overflow-hidden border border-[#F3C326]">
+                <button onclick="setSubordinateLevel(1)" id="subLevelBtn-1" class="flex-1 py-2.5 bg-[#F3C326] text-white transition">Level 1</button>
+                <button onclick="setSubordinateLevel(2)" id="subLevelBtn-2" class="flex-1 py-2.5 bg-white text-gray-500 transition border-l border-[#F3C326]/30">Level 2</button>
+                <button onclick="setSubordinateLevel(3)" id="subLevelBtn-3" class="flex-1 py-2.5 bg-white text-gray-500 transition border-l border-[#F3C326]/30">Level 3</button>
+            </div>
+        </div>
+        <div id="subordinateListContent" class="p-4 flex-1 bg-[#f4f5f8] pb-10 space-y-3"></div>
+    </div>
+
+    <div id="safeBoxModal" class="hidden-el fixed inset-0 bg-[#f4f5f8] z-[3000] overflow-y-auto flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto">
+        <div class="bg-[#F3C326] p-4 sticky top-0 z-20 shadow-md flex items-center justify-between">
+            <i onclick="hideModal('safeBoxModal')" class="fas fa-angle-left text-white text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 class="text-lg font-black uppercase tracking-wider text-white absolute left-1/2 -translate-x-1/2 drop-shadow-sm"><i class="fas fa-vault mr-1"></i> Safe Box</h2>
+            <div class="w-6"></div>
+        </div>
+        <div class="p-5 flex-1 bg-[#f4f5f8] pb-10">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 flex justify-between items-center text-center premium-card">
+                <div class="flex-1 border-r border-gray-100">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Main Balance</p>
+                    <p class="text-xl font-black text-gray-800">৳<span class="userBalance">0.00</span></p>
+                </div>
+                <div class="flex-1">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Safe Box</p>
+                    <p class="text-xl font-black text-[#F3C326]">৳<span class="safeBoxBalanceDisplay">0.00</span></p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 premium-card">
+                <div class="flex bg-gray-100 p-1.5 rounded-xl mb-5">
+                    <button onclick="setSafeBoxTab('in')" id="safeTab-in" class="flex-1 py-2.5 rounded-lg text-xs transition bg-white text-gray-800 font-black shadow-sm uppercase tracking-wider">Save to Box</button>
+                    <button onclick="setSafeBoxTab('out')" id="safeTab-out" class="flex-1 py-2.5 rounded-lg text-xs transition text-gray-500 font-bold uppercase tracking-wider hover:text-gray-800">Take Out</button>
+                </div>
+                <div class="relative mb-5">
+                    <span class="absolute left-4 top-4 text-[#F3C326] font-black text-lg drop-shadow-sm">৳</span>
+                    <input type="number" id="safeBoxAmtInput" placeholder="Enter Amount" class="w-full p-4 pl-9 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 font-black text-lg shadow-inner focus:border-[#F3C326]">
+                </div>
+                <button onclick="submitSafeBoxTransfer()" class="w-full bg-[#F3C326] text-white py-4 rounded-xl font-black shadow-md active:scale-95 transition-transform text-sm uppercase tracking-wider">CONFIRM TRANSFER</button>
+            </div>
+            <p class="text-[10px] text-gray-400 text-center font-medium px-4">Funds in the Safe Box are secured and cannot be used for betting until transferred back to the Main Balance.</p>
+        </div>
+    </div>
+
+    <div id="rebateModal" class="hidden-el fixed inset-0 bg-[#f4f5f8] z-[3000] overflow-y-auto flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto">
+        <div class="bg-white p-4 sticky top-0 z-20 shadow-sm flex items-center justify-between border-b border-gray-200">
+            <i onclick="hideModal('rebateModal')" class="fas fa-angle-left text-gray-800 text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 class="text-lg font-black uppercase tracking-wider text-gray-800 absolute left-1/2 -translate-x-1/2 drop-shadow-sm">Betting Rebate</h2>
+            <div class="w-6"></div>
+        </div>
+        <div class="p-5 flex-1 bg-[#f4f5f8] pb-10">
+            <div class="bg-[#F3C326] rounded-2xl p-6 shadow-lg text-white mb-6 relative overflow-hidden">
+                <i class="fas fa-hand-holding-usd absolute -right-4 -bottom-4 text-8xl opacity-20"></i>
+                <p class="text-xs font-bold uppercase tracking-wider mb-1 opacity-90">Total Bet Amount</p>
+                <h3 class="text-3xl font-black drop-shadow-sm mb-4">৳<span id="rebateTotalBetDisplay">0.00</span></h3>
+                <div class="bg-white/20 p-3 rounded-xl border border-white/20 flex justify-between items-center backdrop-blur-sm">
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider opacity-90">Claimable Rebate</p>
+                        <p class="text-xl font-black text-white">৳<span id="rebateClaimableDisplay">0.00</span></p>
+                    </div>
+                    <button onclick="executeRebateClaim()" id="rebateClaimBtn" class="bg-white text-[#F3C326] px-5 py-2.5 rounded-lg font-black text-xs uppercase tracking-wider shadow-md hover:scale-105 transition active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">CLAIM</button>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center premium-card">
+                <h4 class="text-sm font-black text-gray-800 uppercase tracking-wider mb-2">Rebate Rules</h4>
+                <p class="text-xs text-gray-500 font-medium leading-relaxed">For every ৳1,000 bet generated, you can claim ৳6.00 as a rebate reward. The more you bet, the more you earn!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="awardModal" class="hidden-el fixed inset-0 bg-[#f4f5f8] z-[3000] overflow-y-auto flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto">
+        <div class="bg-white p-4 sticky top-0 z-20 shadow-sm flex items-center justify-between border-b border-gray-200">
+            <i onclick="hideModal('awardModal')" class="fas fa-angle-left text-gray-800 text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 class="text-lg font-black uppercase tracking-wider text-gray-800 absolute left-1/2 -translate-x-1/2 drop-shadow-sm">Deposit Award</h2>
+            <div class="w-6"></div>
+        </div>
+        <div class="p-4 flex-1 bg-[#f4f5f8] pb-10">
+            <div class="bg-gray-800 rounded-2xl p-6 shadow-lg text-white mb-6 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none"></div>
+                <p class="text-[10px] text-[#F3C326] font-black uppercase tracking-widest mb-1 relative z-10">Your Total Deposit</p>
+                <h3 class="text-3xl font-black drop-shadow-sm relative z-10">৳<span id="awardTotalDeposit">0.00</span></h3>
+            </div>
+            <h4 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-3 ml-1">Milestone Rewards</h4>
+            <div id="awardListContainer" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <div id="fullHistoryModal" class="hidden-el fixed inset-0 bg-[#f4f5f8] z-[3000] overflow-y-auto flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto">
+        <div class="bg-white p-4 sticky top-0 z-20 shadow-sm flex items-center justify-between border-b border-gray-200">
+            <i onclick="hideModal('fullHistoryModal')" class="fas fa-angle-left text-gray-800 text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 id="fullHistoryTitle" class="text-lg font-black uppercase tracking-wider text-gray-800 absolute left-1/2 -translate-x-1/2 drop-shadow-sm">History</h2>
+            <div class="w-6"></div>
+        </div>
+        <div id="fullHistoryContent" class="p-4 flex-1 bg-[#f4f5f8] pb-10"></div>
+    </div>
+
+    <div id="systemNotificationModal" class="hidden-el fixed inset-0 bg-[#f4f5f8] z-[3000] overflow-y-auto flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto">
+        <div class="bg-white p-4 sticky top-0 z-20 shadow-sm flex items-center justify-between border-b border-gray-200">
+            <i onclick="hideModal('systemNotificationModal')" class="fas fa-angle-left text-gray-800 text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 class="text-lg font-black uppercase tracking-wider text-gray-800 absolute left-1/2 -translate-x-1/2 drop-shadow-sm">Notifications</h2>
+            <div class="w-6"></div>
+        </div>
+        <div id="systemNotifContent" class="p-4 flex-1 bg-[#f4f5f8] pb-10"></div>
+    </div>
+
+    <div id="csChatModal" class="hidden-el fixed inset-0 z-[6000] bg-[#f4f5f8] flex flex-col h-[100dvh] w-full max-w-[480px] mx-auto shadow-2xl">
+        <div class="bg-[#F3C326] p-4 flex justify-between items-center text-white shadow-md">
+            <i class="fas fa-angle-left text-2xl cursor-pointer active:scale-90" onclick="closeCsChat()"></i>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-inner text-[#F3C326]"><i class="fas fa-headset"></i></div>
+                <h2 class="font-black text-lg tracking-wider uppercase drop-shadow-sm">Support</h2>
+            </div>
+            <div class="w-6"></div>
+        </div>
+        <div id="csChatBody" class="flex-1 overflow-y-auto p-4 space-y-4 bg-[#f4f5f8] flex flex-col relative"></div>
+        <div class="bg-white border-t border-gray-200 p-3 flex items-center gap-2 pb-5 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+            <label class="text-[#F3C326] text-2xl cursor-pointer p-2 active:scale-90 transition">
+                <i class="fas fa-image"></i>
+                <input type="file" id="csImageInput" class="hidden-el" accept="image/*" onchange="sendCsImage(this)">
+            </label>
+            <input type="text" id="csTextInput" class="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-3 text-sm font-bold outline-none focus:border-[#F3C326]" placeholder="Type your message...">
+            <button onclick="sendCsText()" class="w-12 h-12 rounded-full bg-[#F3C326] text-white flex items-center justify-center text-xl shadow-md active:scale-90 transition"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="hidden-el fixed inset-0 bg-black/60 flex items-center justify-center z-[3000] p-6 backdrop-blur-sm transition-opacity">
+        <div class="bg-white w-full max-w-[400px] p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-gray-100 transform transition-transform">
+            <h3 class="text-gray-800 font-black text-xl mb-6 text-center uppercase tracking-widest border-b border-gray-100 pb-3">Account Settings</h3>
+            <label class="text-[10px] text-gray-500 font-black uppercase tracking-wider pl-1">Display Name</label>
+            <input type="text" id="settingName" class="w-full p-4 mt-1 bg-gray-50 border border-gray-200 text-gray-800 rounded-xl mb-4 font-bold focus:border-[#F3C326] shadow-inner">
+            <label class="text-[10px] text-gray-500 font-black uppercase tracking-wider pl-1">New Password (Optional)</label>
+            <input type="password" id="settingPass" class="w-full p-4 mt-1 bg-gray-50 border border-gray-200 text-gray-800 rounded-xl mb-4 font-bold focus:border-[#F3C326] shadow-inner" placeholder="New Password">
+            <label class="text-[10px] text-gray-500 font-black uppercase tracking-wider pl-1">Confirm Password</label>
+            <input type="password" id="settingConfirmPass" class="w-full p-4 mt-1 bg-gray-50 border border-gray-200 text-gray-800 rounded-xl mb-6 font-bold focus:border-[#F3C326] shadow-inner" placeholder="Confirm Password">
+            <div class="flex gap-3">
+                <button onclick="hideModal('settingsModal')" class="flex-1 py-4 bg-gray-100 text-gray-600 rounded-xl font-black uppercase tracking-wider hover:bg-gray-200 transition">Cancel</button>
+                <button onclick="saveSettings()" class="flex-1 py-4 bg-[#F3C326] text-white rounded-xl font-black uppercase tracking-wider shadow-md hover:scale-105 transition transform">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="avatarModal" class="hidden-el fixed inset-0 bg-black/60 flex items-center justify-center z-[3000] p-6 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-[400px] p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+            <h3 class="text-gray-800 font-black text-xl mb-6 text-center uppercase tracking-widest border-b border-gray-100 pb-3">Select Avatar</h3>
+            <div class="grid grid-cols-3 gap-4 mb-6" id="avatarGrid"></div>
+            <button onclick="hideModal('avatarModal')" class="w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-black uppercase tracking-wider hover:bg-gray-200 transition">Cancel</button>
+        </div>
+    </div>
+
+    <div id="platformNotifModal" class="hidden-el fixed inset-0 z-[9999] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-[350px] rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden transform scale-95 transition-transform duration-300 border border-[#F3C326]/50" id="platformNotifContent">
+            <div class="bg-[#F3C326] p-5 text-center relative shadow-sm">
+                <i class="fas fa-bell text-4xl text-white animate-bounce mb-2 drop-shadow-md"></i>
+                <h3 id="notifModalTitle" class="text-white font-black text-xl uppercase tracking-widest drop-shadow-sm">Welcome</h3>
+            </div>
+            <div class="p-6 text-center bg-white">
+                <p id="notifModalMessage" class="text-gray-600 text-sm font-medium leading-relaxed mb-6 whitespace-pre-wrap"></p>
+                <button onclick="closeNotifModal()" class="w-full bg-[#F3C326] text-white py-4 rounded-xl font-black uppercase tracking-wider shadow-sm hover:scale-105 transition transform active:scale-95">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="betConfirmModal" class="hidden-el fixed inset-0 z-[1000] bg-black/70 flex items-end backdrop-blur-sm">
+        <div class="bg-white w-full rounded-t-3xl p-6 shadow-[0_-10px_35px_rgba(0,0,0,0.5)] border-t border-[#F3C326]/30 transform transition-transform duration-300">
+            <div class="text-center mb-6">
+                <p id="betMarketNameDisplay" class="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">WinGo 30s</p>
+                <h2 id="selectedType" class="text-4xl font-black text-gray-800 uppercase drop-shadow-sm">Red</h2>
+            </div>
+            <div class="bg-gray-50 p-5 rounded-2xl flex justify-between items-center mb-6 border border-gray-200 shadow-inner">
+                <span class="text-[11px] font-black text-gray-500 uppercase tracking-widest">Your Balance</span>
+                <span class="text-[#F3C326] font-black text-xl drop-shadow-sm">৳ <span class="userBalance">0.00</span></span>
+            </div>
+            <div class="flex items-center justify-between mb-8">
+                <span class="text-[11px] text-gray-700 font-black uppercase tracking-widest">Bet Amount</span>
+                <div class="flex items-center gap-5">
+                    <button onclick="adjustBet(-1)" class="w-12 h-12 bg-gray-100 text-gray-600 rounded-full font-black text-xl hover:bg-gray-200 shadow-inner transition hover:scale-105">-</button>
+                    <input type="number" id="finalAmount" value="1" class="w-24 text-center bg-transparent border-b-2 border-[#F3C326] font-black text-3xl text-gray-800 outline-none">
+                    <button onclick="adjustBet(1)" class="w-12 h-12 bg-[#F3C326] text-white rounded-full font-black text-xl shadow-md transition hover:scale-105">+</button>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="hideModal('betConfirmModal')" class="flex-1 py-4 bg-gray-100 rounded-xl font-black text-gray-500 hover:bg-gray-200 uppercase tracking-wider transition shadow-sm">Cancel</button>
+                <button onclick="confirmBet()" class="flex-1 py-4 bg-[#F3C326] text-white rounded-xl font-black uppercase tracking-wider shadow-[0_6px_20px_rgba(243,195,38,0.4)] active:scale-95 transition-transform hover:scale-105">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="resultPopup" class="hidden-el fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="result-popup w-full max-w-[320px] relative">
+            <div id="confettiContainer"></div>
+            <div id="resCard" class="bg-white rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(243,195,38,0.5)] border border-[#F3C326]/30 relative z-10">
+                <div id="resHeader" class="h-44 flex items-center justify-center flex-col relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+                    <h2 id="resTitle" class="text-6xl font-black italic tracking-tighter drop-shadow-lg z-10 relative text-white">WIN</h2>
+                    <div id="resIcon" class="text-5xl mt-2 z-10 drop-shadow-md">🏆</div>
+                </div>
+                <div class="p-8 text-center bg-white">
+                    <p id="resMsg" class="text-gray-500 font-black text-[10px] uppercase tracking-widest mb-3">Profit Added</p>
+                    <h3 id="resAmount" class="text-5xl font-black mb-8 tracking-tighter text-gray-800 drop-shadow-sm">৳0.00</h3>
+                    <button onclick="closeResultPopup()" class="w-full bg-[#F3C326] text-white py-4 rounded-xl font-black uppercase tracking-widest shadow-sm hover:scale-105 transition transform active:scale-95">CONTINUE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bindWalletModal" class="hidden-el fixed inset-0 bg-black/60 flex items-center justify-center z-[2000] p-6 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-[400px] p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-gray-100">
+            <h3 class="text-gray-800 font-black text-xl mb-6 text-center uppercase tracking-widest border-b border-gray-100 pb-3">Bind Wallet</h3>
+            <div class="flex gap-4 mb-6">
+                <div onclick="setBindType('Bkash')" id="bind-Bkash" class="flex-1 bg-gray-50 border border-gray-200 p-5 rounded-2xl flex flex-col items-center cursor-pointer hover:border-[#F3C326] transition shadow-sm">
+                    <svg class="w-12 h-12 mb-3 drop-shadow-sm" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="15" fill="#E2136E"/><polygon points="25,35 50,55 25,75" fill="#FFFFFF"/><polygon points="50,55 75,35 100,55 75,75" fill="#FFFFFF"/></svg>
+                    <span class="text-xs font-black text-gray-700 uppercase tracking-widest">bKash</span>
+                </div>
+                <div onclick="setBindType('Nagad')" id="bind-Nagad" class="flex-1 bg-gray-50 border border-gray-200 p-5 rounded-2xl flex flex-col items-center cursor-pointer hover:border-[#F3C326] transition shadow-sm">
+                    <svg class="w-12 h-12 mb-3 drop-shadow-sm" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="15" fill="#ED1C24"/><path d="M50 20 A30 30 0 1 1 20 50" fill="none" stroke="#F7931E" stroke-width="12" stroke-linecap="round"/><path d="M50 35 A15 15 0 1 1 35 50" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#F7931E"/></svg>
+                    <span class="text-xs font-black text-gray-700 uppercase tracking-widest">Nagad</span>
+                </div>
+            </div>
+            <input type="hidden" id="walletType" value="">
+            <label class="text-[10px] text-gray-500 font-black uppercase tracking-wider pl-1">Wallet Number</label>
+            <input type="number" id="walletNum" class="w-full p-4 mt-1 bg-gray-50 border border-gray-200 text-gray-800 rounded-xl mb-6 font-bold focus:border-[#F3C326] shadow-inner" placeholder="017xxxxxxxx">
+            <div class="flex gap-3">
+                <button onclick="hideModal('bindWalletModal')" class="flex-1 py-4 bg-gray-100 text-gray-500 rounded-xl font-black uppercase tracking-wider hover:bg-gray-200 transition">Cancel</button>
+                <button onclick="saveWallet()" class="flex-1 py-4 bg-[#F3C326] text-white rounded-xl font-black uppercase tracking-wider shadow-[0_6px_20px_rgba(243,195,38,0.4)] hover:scale-105 transition transform">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORIGINAL EXACT PAYMENT GATEWAY HTML -->
+    <div id="gatewayModal" class="hidden-el fixed inset-0 z-[5000] bg-[#f8f9fa] overflow-y-auto w-full max-w-[480px] mx-auto flex flex-col h-[100dvh] shadow-2xl">
+        <div class="p-4 flex justify-start items-center relative bg-white border-b border-gray-200 shadow-sm z-20">
+            <i onclick="hideModal('gatewayModal')" class="fas fa-times text-2xl cursor-pointer absolute left-5 text-gray-600 hover:scale-110 transition hover:text-red-500"></i>
+            <div class="w-full text-center">
+                <h2 class="text-[26px] font-bold text-black tracking-wide">Payment</h2>
+                <p id="gtCurrentTime" class="text-gray-500 text-[14px] mt-1 font-medium"></p>
+            </div>
+        </div>
+
+        <div class="px-5 pb-8 pt-5 flex-1 overflow-y-auto bg-[#f8f9fa]">
+            <div id="gtColorBox" class="rounded-xl p-5 mb-5 text-white shadow-lg transition-colors duration-300 relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/5 pointer-events-none"></div>
+                <p class="text-[15px] font-semibold mb-4 leading-relaxed relative z-10 drop-shadow-sm">অনুগ্রহ করে একই পরিমাণ স্থানান্তর করুন এবং ব্যর্থ এড়াতে সঠিক TxnID পূরণ করুন</p>
+                <p class="text-[15px] font-semibold mb-5 leading-relaxed relative z-10 drop-shadow-sm">এই <span id="gtMethodNameText">বিকাশ</span> অ্যাকাউন্টে অর্থ প্রদান করতে <span class="font-bold text-yellow-200 bg-black/20 px-2 py-0.5 rounded shadow-sm">সেন্ড মানি</span> ব্যবহার করুন</p>
+                <div class="bg-white rounded-xl p-5 text-gray-800 mb-6 shadow-[0_5px_15px_rgba(0,0,0,0.1)] relative z-10">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+                        <span class="text-[16px] font-medium text-black">ওয়ালেট</span><div class="flex items-center gap-1 text-[#e2136e]" id="gtMethodIconWrapper"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+                        <span class="text-[16px] font-medium text-black">সংখ্যা</span><div class="flex items-center gap-2 text-blue-600"><span id="gtAdminPhone" class="text-[18px] font-medium tracking-wider">...</span><i onclick="copyText(document.getElementById('gtAdminPhone').innerText, 'Number')" class="far fa-copy cursor-pointer text-[20px] hover:scale-110 transition active:scale-95"></i></div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[16px] font-medium text-black">পরিমাণ</span><div class="flex items-center gap-2 text-green-600"><span id="gtAmountStr" class="text-[18px] font-medium">100</span><i onclick="copyText(document.getElementById('gtAmountStr').innerText, 'Amount')" class="far fa-copy cursor-pointer text-[20px] hover:scale-110 transition active:scale-95"></i></div>
+                    </div>
+                </div>
+                <p class="text-[15px] font-semibold mb-3 relative z-10 drop-shadow-sm">রিচার্জ সম্পূর্ণ করতে অনুগ্রহ করে লেনদেন আইডি লিখুন</p>
+                <input type="text" id="depTrx" class="w-full p-4 rounded-lg bg-white text-black font-semibold mb-5 outline-none focus:ring-4 focus:ring-white/40 shadow-inner relative z-10 text-[16px]" placeholder="Transaction ID">
+                <button onclick="submitGateway()" class="w-full bg-[#f05a28] hover:bg-[#d94f22] text-white font-bold py-4 rounded-lg text-[18px] transition shadow-[0_5px_15px_rgba(240,90,40,0.4)] hover:shadow-[0_8px_20px_rgba(240,90,40,0.5)] active:scale-95 relative z-10 tracking-wide">জমা দিন</button>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-[0_5px_20px_rgba(0,0,0,0.03)] premium-card">
+                <h3 class="text-blue-800 font-bold text-[18px] mb-5">ব্যাখ্যা:</h3>
+                <div class="flex gap-3 mb-5"><span class="text-blue-800 font-bold text-[16px] mt-0.5">১.</span><div><h4 class="font-bold text-[16px] text-gray-800 mb-2">ওয়ালেট জমা ব্যবহারকারীদের জন্য নির্দেশিকা</h4><p class="text-gray-500 text-[14px] leading-relaxed">নির্দেশিকা ম্যাচিং প্রক্রিয়া সম্পন্ন হওয়ার পর এবং নির্ধারিত নিয়ন্ত্রিত ওয়ালেট অ্যাকাউন্ট প্রাপ্তির পর বিনিয়োগকারীদের অবশ্যই তাদের ব্যক্তিগত ওয়ালেট অ্যাকাউন্ট ব্যবহার করে অর্থ প্রেরণ করতে হবে এবং সেই অর্থ নির্দিষ্ট করা নিয়ন্ত্রিত ওয়ালেট অ্যাকাউন্টে জমা দিতে হবে।</p></div></div>
+                <div class="flex gap-3"><span class="text-blue-800 font-bold text-[16px] mt-0.5">২.</span><div><h4 class="font-bold text-[16px] text-gray-800 mb-2">অর্থ প্রেরণ ও জমা নিশ্চিতকরণ প্রক্রিয়া</h4><p class="text-gray-500 text-[14px] leading-relaxed">অর্থ প্রেরণ সম্পন্ন হওয়ার পর অবিলম্বে লেনদেন নম্বর জমা দিতে হবে, যাতে সিস্টেম তাৎক্ষণিকভাবে যাচাই করে জমা নিশ্চিত করতে পারে।</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="hidden-el fixed inset-0 bg-[#f0f2f5] z-[2000] overflow-y-auto flex flex-col h-[100dvh] max-w-[480px] mx-auto">
+        <div class="bg-white p-4 sticky top-0 z-10 shadow-sm flex items-center justify-between border-b border-gray-200">
+            <i onclick="hideModal('historyModal')" class="fas fa-angle-left text-gray-800 text-2xl cursor-pointer hover:scale-110 transition px-2"></i>
+            <h2 id="historyModalTitle" class="text-lg font-black uppercase tracking-wider text-gray-800 absolute left-1/2 -translate-x-1/2 drop-shadow-sm">Deposit History</h2>
+            <div class="w-6"></div>
+        </div>
+        <div id="historyListContent" class="p-4 flex-1 bg-[#f0f2f5] pb-10"></div>
+    </div>
+
+</div>
+```
+
+---
+
+
+```html
+<script>
+// =========================================================================
+// FIREBASE CONFIGURATION
+// =========================================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyA8Hna_HkgLdBeQmUlV16uwtr6lwX3hc70",
+  authDomain: "la-top-up.firebaseapp.com",
+  databaseURL: "https://la-top-up-default-rtdb.firebaseio.com",
+  projectId: "la-top-up",
+  storageBucket: "la-top-up.firebasestorage.app",
+  messagingSenderId: "765472618949",
+  appId: "1:765472618949:web:8a339cb1a8d6edd827f3ac",
+  measurementId: "G-Y9NBYRP0CB"
+};
+    
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const storage = firebase.storage();
+
+// =========================================================================
+// GLOBAL VARIABLES
+// =========================================================================
+let user = null; 
+let authMode = 'login'; 
+let gameTimerInterval = null; 
+let allUsersDataCache = {}; 
+let liveWinnerInterval = null;
+let currentPromoDateTab = 'today'; 
+let isSoundMuted = false;
+
+const marketConfigs = { '30s': { interval: 30, prefix: '30' }, '1m': { interval: 60, prefix: '01' }, '3m': { interval: 180, prefix: '03' }, '5m': { interval: 300, prefix: '05' } };
+let currentMarket = '30s';
+let currentLivePeriods = { '30s': 0, '1m': 0, '3m': 0, '5m': 0 };
+let historyData = [];
+let historyRef = null;
+let adminForcedResults = { '30s': null, '1m': null, '3m': null, '5m': null };
+
+let processedDisplayData = []; 
+let globalCurrentPage = 1;
+let chartCurrentPage = 1;
+let personalHistoryCurrentPage = 1; 
+const PAGE_SIZE = 10;
+
+let selectedTopMethod = 'Bkash'; 
+let selectedChannel = 'CashPay-bKash'; 
+let depositNumbers = null; 
+
+let currentSubLevel = 1;
+let currentSubDate = "";
+
+const depositMilestones = [
+    { dep: 100, reward: 5 }, { dep: 500, reward: 25 }, { dep: 1000, reward: 50 }, { dep: 2000, reward: 100 }, { dep: 5000, reward: 250 }, { dep: 10000, reward: 500 }, { dep: 50000, reward: 2500 }
+];
+
+const channelData = { 
+    'Bkash':[{ name: 'CashPay-bKash', limit: '100 - 25K' }, { name: 'GoPay-bKash', limit: '100 - 25K' }, { name: 'RolezPay-bKash', limit: '100 - 30K' }, { name: 'Lucky-bKash', limit: '100 - 25K' }], 
+    'Nagad':[{ name: 'CashPay-Nagad', limit: '100 - 25K' }, { name: 'GoPay-Nagad', limit: '100 - 25K' }, { name: 'RolezPay-Nagad', limit: '100 - 30K' }, { name: 'Lucky-Nagad', limit: '100 - 25K' }] 
+};
+
+let serverOffset = 0;
+database.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
+
+function getStandardDateStr(d) {
+    const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`;
+}
+
+function getDeviceId() {
+    let did = localStorage.getItem('bd99_deviceId');
+    if(!did) { did = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now(); localStorage.setItem('bd99_deviceId', did); }
+    return did;
+}
+
+window.addEventListener('resize', () => { if(!document.getElementById('chartHistoryContainer').classList.contains('hidden-el')) { drawTrendLines(); } });
+
+// =========================================================================
+// BANNER SLIDER LOGIC
+// =========================================================================
+let currentBannerIdx = 0;
+let bannerInterval = null;
+
+function renderBanners(images) {
+    const container = document.getElementById('homeBannerSliderContainer');
+    if(!container) return;
+    container.innerHTML = images.map((src, i) => `<img src="${src}" class="slider-img ${i === 0 ? 'opacity-100' : 'opacity-0'}" id="slide-img-${i}">`).join('');
+    
+    if(bannerInterval) clearInterval(bannerInterval);
+    if(images.length > 1) {
+        bannerInterval = setInterval(() => {
+            const oldImg = document.getElementById(`slide-img-${currentBannerIdx}`);
+            if(oldImg) oldImg.classList.replace('opacity-100', 'opacity-0');
+            currentBannerIdx = (currentBannerIdx + 1) % images.length;
+            const newImg = document.getElementById(`slide-img-${currentBannerIdx}`);
+            if(newImg) newImg.classList.replace('opacity-0', 'opacity-100');
+        }, 3000);
+    }
+}
+
+// =========================================================================
+// INITIALIZATION
+// =========================================================================
+window.onload = () => {
+    setTimeout(() => { const splash = document.getElementById('splashScreen'); if(splash) { splash.style.opacity = '0'; setTimeout(() => splash.classList.add('hidden-el'), 500); } }, 3000);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    if(refCode) {
+        const inviteInput = document.getElementById('authInviteCode');
+        inviteInput.value = refCode; inviteInput.readOnly = true; inviteInput.classList.add('bg-gray-200', 'cursor-not-allowed', 'opacity-70', 'pointer-events-none'); toggleAuth('reg');
+    }
+
+    const saved = localStorage.getItem('bd99_user');
+    if(saved) {
+        database.ref('users/' + saved).once('value', s => {
+            if(s.exists()) {
+                user = s.val();
+                if(!user.betHistory) user.betHistory =[]; if(!user.transactions) user.transactions =[]; if(!user.giftHistory) user.giftHistory =[];
+                if(!user.avatar) user.avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${saved}`; 
+                if(!user.rebateClaimed) user.rebateClaimed = 0;
+                if(user.safeBox === undefined) user.safeBox = 0;
+                if(!user.claimedAwards) user.claimedAwards = {};
+                
+                document.getElementById('authPage').classList.add('hidden-el');
+                document.getElementById('mainContent').classList.remove('hidden-el');
+                
+                setupListeners(saved); initTimer(); fetchHistory(); renderDailyLeaderboard(); startLiveWinners(); updateChannelList('Bkash'); 
+            } else { document.getElementById('authPage').classList.remove('hidden-el'); }
+        });
+    } else { document.getElementById('authPage').classList.remove('hidden-el'); }
+    
+    database.ref('admin_control').on('value', s => { 
+        if(s.exists()) { 
+            let data = s.val();
+            adminForcedResults['30s'] = data.forcedResult_30s || data.forcedResult || null; 
+            adminForcedResults['1m'] = data.forcedResult_1m || null; adminForcedResults['3m'] = data.forcedResult_3m || null; adminForcedResults['5m'] = data.forcedResult_5m || null;
+        } 
+    });
+
+    database.ref('admin_settings/deposit_logos').on('value', snap => {
+        const l = snap.val() || {};
+        const bkImg = document.getElementById('logo-Bkash-img'); const bkSvg = document.getElementById('logo-Bkash-svg');
+        if(l.bkash && l.bkash !== "") { bkSvg.classList.add('hidden'); bkImg.src = l.bkash; bkImg.classList.remove('hidden'); } else { bkSvg.classList.remove('hidden'); bkImg.classList.add('hidden'); }
+        const ngImg = document.getElementById('logo-Nagad-img'); const ngSvg = document.getElementById('logo-Nagad-svg');
+        if(l.nagad && l.nagad !== "") { ngSvg.classList.add('hidden'); ngImg.src = l.nagad; ngImg.classList.remove('hidden'); } else { ngSvg.classList.remove('hidden'); ngImg.classList.add('hidden'); }
+    });
+
+    let popupShownThisSession = false;
+    database.ref('admin_settings').on('value', s => { 
+        if(s.exists()) { 
+            const settings = s.val();
+            
+            // BANNER LOGIC
+            let bannerImages = [];
+            if (settings.home_banners && Array.isArray(settings.home_banners)) {
+                bannerImages = settings.home_banners.filter(url => typeof url === 'string' && url.trim() !== "");
+            } else if (settings.home_banners) {
+                bannerImages = Object.values(settings.home_banners).filter(url => typeof url === 'string' && url.trim() !== "");
+            } else if (settings.home_banner && typeof settings.home_banner === 'string' && settings.home_banner.trim() !== "") {
+                bannerImages = [settings.home_banner.trim()];
+            }
+            if(bannerImages.length === 0) bannerImages = ["https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=800&q=80"];
+            renderBanners(bannerImages);
+
+            // POPUP LOGIC
+            if(settings.popup_active === true && settings.popup_message && settings.popup_message.trim() !== "") {
+                if(!popupShownThisSession) { document.getElementById('notifModalMessage').innerText = settings.popup_message; document.getElementById('platformNotifModal').classList.remove('hidden-el'); setTimeout(() => { document.getElementById('platformNotifContent').classList.remove('scale-95'); document.getElementById('platformNotifContent').classList.add('scale-100'); }, 10); popupShownThisSession = true; }
+            } else { document.getElementById('platformNotifModal').classList.add('hidden-el'); }
+        } 
+    });
+
+    database.ref('admin_control/payment_numbers').on('value', s => { if(s.exists()) { depositNumbers = s.val(); if(!document.getElementById('gatewayModal').classList.contains('hidden-el')) { document.getElementById('gtAdminPhone').innerText = getLiveNumber(selectedTopMethod); } } });
+    
+    // Notifications Listener
+    database.ref('admin_notifications').on('value', s => {
+        if(s.exists() && user) {
+            let notifs = Object.values(s.val()).reverse();
+            document.getElementById('notifBadge').innerText = notifs.length;
+            let html = '';
+            notifs.forEach(n => {
+                let d = new Date(n.timestamp || Date.now()).toLocaleString();
+                html += `<div class="bg-white rounded-xl p-4 mb-3 border border-gray-100 shadow-sm"><h4 class="font-bold text-gray-800 text-sm mb-1 uppercase tracking-wider">${n.title || 'System Message'}</h4><p class="text-[10px] text-gray-400 mb-2 font-bold">${d}</p><p class="text-xs text-gray-600">${n.message}</p></div>`;
+            });
+            document.getElementById('systemNotifContent').innerHTML = html;
+        } else {
+            document.getElementById('notifBadge').innerText = '0';
+            document.getElementById('systemNotifContent').innerHTML = '<div class="text-center text-gray-400 font-bold mt-10 text-xs uppercase tracking-widest">No notifications yet.</div>';
+        }
+    });
+};
+
+// =========================================================================
+// AUTHENTICATION LOGIC
+// =========================================================================
+function togglePasswordVisibility(inputId, iconEl) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") { input.type = "text"; iconEl.classList.remove('fa-eye-slash'); iconEl.classList.add('fa-eye', 'text-[#F3C326]'); } 
+    else { input.type = "password"; iconEl.classList.add('fa-eye-slash'); iconEl.classList.remove('fa-eye', 'text-[#F3C326]'); }
+}
+
+function toggleAuth(t) {
+    authMode = t; const isLogin = t === 'login';
+    if (isLogin) { 
+        document.getElementById('confirmPassBox').classList.add('hidden-el'); document.getElementById('inviteCodeBox').classList.add('hidden-el'); document.getElementById('passLabel').innerHTML = 'Password'; document.getElementById('authTitle').innerText = 'Log in'; document.getElementById('authSubtitle').innerText = 'Please log in with your phone number'; document.getElementById('rememberBox').classList.remove('hidden-el'); document.getElementById('agreementBox').classList.add('hidden-el'); document.getElementById('regTabText').innerText = 'Phone number';
+    } else { 
+        document.getElementById('confirmPassBox').classList.remove('hidden-el'); document.getElementById('inviteCodeBox').classList.remove('hidden-el'); document.getElementById('passLabel').innerHTML = 'Set password'; document.getElementById('authTitle').innerText = 'Register'; document.getElementById('authSubtitle').innerText = 'Please register by phone number'; document.getElementById('rememberBox').classList.add('hidden-el'); document.getElementById('agreementBox').classList.remove('hidden-el'); document.getElementById('regTabText').innerText = 'Register';
+    }
+    document.getElementById('authBtn').innerText = isLogin ? 'Log in' : 'Register'; document.getElementById('authSwitchBtn').innerText = isLogin ? 'Register' : 'Log in';
+}
+
+function handleAuth() {
+    const p = document.getElementById('authPhone').value; const pass = document.getElementById('authPass').value; 
+    if(!p || !pass) return alert("Please fill all fields!");
+    if(authMode === 'login') {
+        database.ref('users/' + p).once('value', s => { if(s.exists() && s.val().pass === pass) { localStorage.setItem('bd99_user', p); location.reload(); } else { alert("Invalid Login Credentials!"); } });
+    } else {
+        const cPass = document.getElementById('authConfirmPass').value; const ref = document.getElementById('authInviteCode').value; 
+        if(pass !== cPass) return alert("Passwords do not match!");
+        database.ref('users/' + p).once('value', s => {
+            if(s.exists()) return alert("Account already exists with this number!");
+            const uid = Math.floor(100000 + Math.random() * 900000);
+            const newUser = { 
+                phone: p, pass: pass, uid: uid, balance: 28, deviceId: getDeviceId(), wager_left: 120, referrer: ref || null, joinDate: getStandardDateStr(new Date()), last_commission_date: getStandardDateStr(new Date()), referrals: { count: 0, depSum: 0, betSum: 0, commission: 0 }, giftHistory:[], betHistory:[], transactions:[{ type: 'Welcome Bonus', amount: 28, method: 'System', status: 'Complete', date: new Date().toLocaleString(), timestamp: Date.now(), orderNum: 'WB' + Date.now(), note: 'Registration Welcome Bonus 28 BDT' }], avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${uid}`, rebateClaimed: 0, safeBox: 0, claimedAwards: {}
+            };
+            if(ref) { database.ref('users').orderByChild('uid').equalTo(parseInt(ref)).once('value', rs => { if(rs.exists()) { rs.forEach(c => { let rKey = c.key; let cnt = c.val().referrals.count || 0; database.ref(`users/${rKey}/referrals/count`).set(cnt + 1); }); } }); }
+            database.ref('users/' + p).set(newUser).then(() => { alert("Registered Successfully! 28 BDT Bonus Added. Please Login now."); toggleAuth('login'); });
+        });
+    }
+}
+
+// =========================================================================
+// MAIN APP LOGIC
+// =========================================================================
+function setupListeners(phone) {
+    database.ref('users/' + phone).on('value', s => {
+        if(s.exists()) {
+            user = s.val();
+            if(!user.betHistory) user.betHistory =[]; if(!user.transactions) user.transactions =[]; if(!user.giftHistory) user.giftHistory =[];
+            if(!user.avatar) user.avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`;
+            if(user.wager_left === undefined) user.wager_left = 0;
+            if(user.rebateClaimed === undefined) user.rebateClaimed = 0;
+            if(user.safeBox === undefined) user.safeBox = 0;
+            if(!user.claimedAwards) user.claimedAwards = {};
+            
+            let updates = {}; let needsUpdate = false;
+            let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+            
+            txArr.forEach((t, idx) => {
+                let st = String(t.status).toLowerCase();
+                if(t.type === 'Deposit' && (st === 'accepted' || st === 'complete' || st === 'success') && !t.wagerAdded) {
+                    user.wager_left = (parseFloat(user.wager_left) || 0) + parseFloat(t.amount);
+                    t.wagerAdded = true; updates[`users/${user.phone}/wager_left`] = user.wager_left; updates[`users/${user.phone}/transactions/${idx}/wagerAdded`] = true; needsUpdate = true;
+                }
+            });
+            if(needsUpdate) database.ref().update(updates);
+            checkCommissionTransfer(); updateUI();
+        }
+    });
+}
+
+function updateUI() {
+    document.querySelectorAll('.userBalance').forEach(e => e.innerText = parseFloat(user.balance || 0).toFixed(2));
+    document.querySelectorAll('.safeBoxBalanceDisplay').forEach(e => e.innerText = parseFloat(user.safeBox || 0).toFixed(2));
+    
+    document.getElementById('profilePhone').innerText = user.name || user.phone; 
+    document.getElementById('profileUID').innerText = user.uid; 
+    document.getElementById('profileAvatarImg').src = user.avatar;
+    
+    let refLink = window.location.origin + window.location.pathname + "?ref=" + user.uid;
+    document.getElementById('myInviteCodeTextSmall').innerText = user.uid;
+    document.getElementById('referralLink').value = refLink;
+    
+    if(user.wallet) { document.getElementById('boundWalletType').innerText = user.wallet.type; document.getElementById('boundWalletNum').innerText = user.wallet.num; }
+    
+    let left = parseFloat(user.wager_left || 0);
+    document.getElementById('wagerNeededDisplay').innerText = "৳" + left.toFixed(2);
+    if (left <= 0) { document.getElementById('turnoverStatusText').innerHTML = "<span class='text-green-500'>Complete</span>"; document.getElementById('turnoverProgressBar').style.width = "100%"; document.getElementById('turnoverProgressBar').className = "h-full bg-green-500 transition-all duration-500 shadow-sm"; } 
+    else { document.getElementById('turnoverStatusText').innerHTML = `<span class='text-red-500'>Pending</span>`; document.getElementById('turnoverProgressBar').style.width = "50%"; document.getElementById('turnoverProgressBar').className = "h-full bg-red-500 transition-all duration-500 shadow-inner"; }
+
+    calculateActivityBonus();
+    renderMyHistory(); renderGiftHistory();
+}
+
+function openSafeBoxModal() {
+    updateUI(); 
+    document.getElementById('safeBoxAmtInput').value = '';
+    setSafeBoxTab('in');
+    document.getElementById('safeBoxModal').classList.remove('hidden-el');
+}
+
+let currentSafeBoxTab = 'in';
+function setSafeBoxTab(type) {
+    currentSafeBoxTab = type;
+    const tabIn = document.getElementById('safeTab-in');
+    const tabOut = document.getElementById('safeTab-out');
+    if (type === 'in') {
+        tabIn.className = "flex-1 py-2.5 rounded-lg text-xs transition bg-white text-gray-800 font-black shadow-sm uppercase tracking-wider";
+        tabOut.className = "flex-1 py-2.5 rounded-lg text-xs transition text-gray-500 font-bold uppercase tracking-wider hover:text-gray-800";
+    } else {
+        tabOut.className = "flex-1 py-2.5 rounded-lg text-xs transition bg-white text-gray-800 font-black shadow-sm uppercase tracking-wider";
+        tabIn.className = "flex-1 py-2.5 rounded-lg text-xs transition text-gray-500 font-bold uppercase tracking-wider hover:text-gray-800";
+    }
+}
+
+function submitSafeBoxTransfer() {
+    let amt = parseFloat(document.getElementById('safeBoxAmtInput').value);
+    if(isNaN(amt) || amt <= 0) return alert("Please enter a valid amount");
+
+    if (currentSafeBoxTab === 'in') {
+        if(user.balance < amt) return alert("Insufficient Main Balance to save");
+        user.balance -= amt;
+        user.safeBox = (parseFloat(user.safeBox) || 0) + amt;
+    } else {
+        if((parseFloat(user.safeBox) || 0) < amt) return alert("Insufficient Safe Box Balance to take out");
+        user.safeBox -= amt;
+        user.balance += amt;
+    }
+
+    database.ref('users/' + user.phone).set(user).then(() => {
+        alert("Transfer Successful!");
+        document.getElementById('safeBoxAmtInput').value = '';
+        updateUI();
+    });
+}
+
+function openRebateModal() {
+    if(!user || !user.betHistory) {
+        document.getElementById('rebateTotalBetDisplay').innerText = "0.00";
+        document.getElementById('rebateClaimableDisplay').innerText = "0.00";
+        document.getElementById('rebateClaimBtn').disabled = true;
+    } else {
+        let betsArr = Array.isArray(user.betHistory) ? user.betHistory : Object.values(user.betHistory);
+        let totalBet = 0;
+        betsArr.forEach(b => totalBet += parseFloat(b.amount || 0));
+        
+        let totalEarnable = Math.floor(totalBet / 1000) * 6; // 6 Taka per 1000 Bet
+        let alreadyClaimed = parseFloat(user.rebateClaimed || 0);
+        let claimableNow = totalEarnable - alreadyClaimed;
+
+        document.getElementById('rebateTotalBetDisplay').innerText = totalBet.toFixed(2);
+        document.getElementById('rebateClaimableDisplay').innerText = claimableNow.toFixed(2);
+        
+        if (claimableNow > 0) {
+            document.getElementById('rebateClaimBtn').disabled = false;
+        } else {
+            document.getElementById('rebateClaimBtn').disabled = true;
+        }
+    }
+    document.getElementById('rebateModal').classList.remove('hidden-el');
+}
+
+function executeRebateClaim() {
+    if(!user || !user.betHistory) return;
+    let betsArr = Array.isArray(user.betHistory) ? user.betHistory : Object.values(user.betHistory);
+    let totalBet = 0;
+    betsArr.forEach(b => totalBet += parseFloat(b.amount || 0));
+    
+    let totalEarnable = Math.floor(totalBet / 1000) * 6;
+    let alreadyClaimed = parseFloat(user.rebateClaimed || 0);
+    let claimableNow = totalEarnable - alreadyClaimed;
+
+    if(claimableNow > 0) {
+        user.balance += claimableNow;
+        user.rebateClaimed = alreadyClaimed + claimableNow;
+        
+        if(!user.transactions) user.transactions =[];
+        let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+        txArr.unshift({
+            type: 'Betting Rebate',
+            amount: claimableNow,
+            method: 'System',
+            status: 'Complete',
+            date: new Date().toLocaleString(),
+            timestamp: Date.now(),
+            orderNum: 'REB' + Date.now(),
+            note: 'Turnover Rebate Claimed'
+        });
+        user.transactions = txArr;
+        database.ref('users/'+user.phone).set(user).then(() => {
+            alert(`Successfully Claimed ৳${claimableNow} as Betting Rebate!`);
+            openRebateModal();
+            updateUI();
+        });
+    }
+}
+
+function openAwardModal() {
+    renderAwardList();
+    document.getElementById('awardModal').classList.remove('hidden-el');
+}
+
+function getTotalDepositAmount() {
+    let totalDep = 0;
+    if(user && user.transactions) {
+        let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+        txArr.forEach(t => {
+            if (t.type === 'Deposit' && ['accepted','complete','success'].includes(String(t.status).toLowerCase())) {
+                totalDep += parseFloat(t.amount || 0);
+            }
+        });
+    }
+    return totalDep;
+}
+
+function renderAwardList() {
+    let totalDep = getTotalDepositAmount();
+    document.getElementById('awardTotalDeposit').innerText = totalDep.toFixed(2);
+    
+    let html = '';
+    let highestEligibleIndex = -1;
+    for (let i = depositMilestones.length - 1; i >= 0; i--) {
+        if (totalDep >= depositMilestones[i].dep) {
+            highestEligibleIndex = i;
+            break;
+        }
+    }
+
+    depositMilestones.forEach((m, idx) => {
+        let isClaimed = user.claimedAwards && user.claimedAwards[`award_${m.dep}`] === true;
+        let btnHtml = '';
+        if (isClaimed) {
+            btnHtml = `<button class="px-4 py-2 bg-gray-200 text-gray-500 rounded-lg font-black text-[10px] uppercase tracking-wider cursor-not-allowed">CLAIMED</button>`;
+        } else if (idx === highestEligibleIndex) {
+            btnHtml = `<button onclick="claimDepositAward(${m.dep}, ${m.reward})" class="px-4 py-2 bg-[#F3C326] text-white rounded-lg font-black text-[10px] uppercase tracking-wider shadow-sm hover:scale-105 transition active:scale-95">CLAIM</button>`;
+        } else if (idx < highestEligibleIndex) {
+            btnHtml = `<button class="px-4 py-2 bg-red-100 border border-red-200 text-red-400 rounded-lg font-black text-[10px] uppercase tracking-wider cursor-not-allowed">SKIPPED</button>`;
+        } else {
+            btnHtml = `<button onclick="switchTab('wallet'); setWalletTab('deposit'); hideModal('awardModal');" class="px-4 py-2 bg-gray-100 border border-gray-200 text-gray-400 rounded-lg font-black text-[10px] uppercase tracking-wider hover:bg-gray-200 transition">GO DEP</button>`;
+        }
+
+        html += `
+        <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-sm border border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center text-lg"><i class="fas fa-medal"></i></div>
+                <div>
+                    <h4 class="text-xs font-black text-gray-800 uppercase tracking-wider mb-0.5">Dep ৳${m.dep}</h4>
+                    <p class="text-[10px] text-gray-500 font-bold">Reward: <span class="text-orange-500 font-black">৳${m.reward}</span></p>
+                </div>
+            </div>
+            ${btnHtml}
+        </div>`;
+    });
+    
+    document.getElementById('awardListContainer').innerHTML = html;
+}
+
+function claimDepositAward(depAmount, rewardAmount) {
+    if (!user) return;
+    let totalDep = getTotalDepositAmount();
+    if (totalDep < depAmount) return alert("Not eligible yet!");
+    if (user.claimedAwards && user.claimedAwards[`award_${depAmount}`] === true) return alert("Already claimed!");
+    
+    user.balance += rewardAmount;
+    if(!user.claimedAwards) user.claimedAwards = {};
+    user.claimedAwards[`award_${depAmount}`] = true;
+
+    if(!user.transactions) user.transactions =[];
+    let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+    txArr.unshift({
+        type: 'Deposit Bonus',
+        amount: rewardAmount,
+        method: 'System',
+        status: 'Complete',
+        date: new Date().toLocaleString(),
+        timestamp: Date.now(),
+        orderNum: 'AWARD' + Date.now(),
+        note: `Award Claimed for Reaching ৳${depAmount} Deposit`
+    });
+    user.transactions = txArr;
+    
+    database.ref('users/'+user.phone).set(user).then(() => {
+        alert(`Congratulations! You received ৳${rewardAmount} Deposit Bonus!`);
+        renderAwardList();
+        updateUI();
+    });
+}
+
+function openSubordinateModal() {
+    currentSubLevel = 1;
+    currentSubDate = "";
+    document.getElementById('subordinateDateFilter').value = "";
+    setSubordinateLevel(1);
+    document.getElementById('subordinateModal').classList.remove('hidden-el');
+}
+
+function setSubordinateLevel(level) {
+    currentSubLevel = level;
+    document.getElementById('subLevelBtn-1').className = "flex-1 py-2.5 bg-white text-gray-500 transition border-l border-[#F3C326]/30";
+    document.getElementById('subLevelBtn-2').className = "flex-1 py-2.5 bg-white text-gray-500 transition border-l border-[#F3C326]/30";
+    document.getElementById('subLevelBtn-3').className = "flex-1 py-2.5 bg-white text-gray-500 transition border-l border-[#F3C326]/30";
+    
+    let activeClass = "flex-1 py-2.5 bg-[#F3C326] text-white transition";
+    if(level === 1) document.getElementById('subLevelBtn-1').className = activeClass;
+    if(level === 2) document.getElementById('subLevelBtn-2').className = activeClass;
+    if(level === 3) document.getElementById('subLevelBtn-3').className = activeClass;
+    
+    renderSubordinateList();
+}
+
+function renderSubordinateList() {
+    if(!allUsersDataCache || !user) return;
+    
+    let myUidStr = String(user.uid); 
+    let filterDate = document.getElementById('subordinateDateFilter').value; 
+    
+    let lv1 = [], lv2 = [], lv3 = [];
+    Object.values(allUsersDataCache).forEach(u => { if(String(u.referrer) === myUidStr) lv1.push(u); }); 
+    let lv1Uids = lv1.map(u => String(u.uid));
+    
+    Object.values(allUsersDataCache).forEach(u => { if(lv1Uids.includes(String(u.referrer))) lv2.push(u); }); 
+    let lv2Uids = lv2.map(u => String(u.uid));
+    
+    Object.values(allUsersDataCache).forEach(u => { if(lv2Uids.includes(String(u.referrer))) lv3.push(u); });
+    
+    let targetList = currentSubLevel === 1 ? lv1 : (currentSubLevel === 2 ? lv2 : lv3);
+    
+    if (filterDate && filterDate !== "") { targetList = targetList.filter(u => u.joinDate === filterDate); }
+
+    let html = '';
+    targetList.forEach(u => {
+        let uDep = 0, uBet = 0;
+        if(u.transactions) { 
+            let txs = Array.isArray(u.transactions) ? u.transactions : Object.values(u.transactions); 
+            txs.forEach(t => { if(t.type === 'Deposit' && ['accepted','complete','success'].includes(String(t.status).toLowerCase())) { uDep += parseFloat(t.amount || 0); } }); 
+        }
+        if(u.betHistory) {
+            let bets = Array.isArray(u.betHistory) ? u.betHistory : Object.values(u.betHistory);
+            bets.forEach(b => { uBet += parseFloat(b.amount || 0); });
+        }
+        html += `
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="flex justify-between items-center border-b border-gray-50 pb-2 mb-2">
+                <div class="flex items-center gap-2">
+                    <img src="${u.avatar}" class="w-8 h-8 rounded-full bg-gray-100 object-cover border border-gray-200">
+                    <span class="font-black text-xs text-gray-800 uppercase tracking-wider">${u.name || u.phone} <span class="text-gray-400 font-normal">(${u.uid})</span></span>
+                </div>
+                <span class="text-[9px] text-gray-400 font-bold bg-gray-100 px-2 py-1 rounded">${u.joinDate}</span>
+            </div>
+            <div class="flex justify-between text-center">
+                <div class="flex-1">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Total Dep</p>
+                    <p class="text-[13px] font-black text-green-500 drop-shadow-sm">৳${uDep.toFixed(2)}</p>
+                </div>
+                <div class="w-px bg-gray-100"></div>
+                <div class="flex-1">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Total Bet</p>
+                    <p class="text-[13px] font-black text-[#F3C326] drop-shadow-sm">৳${uBet.toFixed(2)}</p>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    if(targetList.length === 0) { html = `<div class="text-center text-gray-400 mt-10 font-bold uppercase tracking-wider text-xs">No Subordinates Found.</div>`; }
+    document.getElementById('subordinateListContent').innerHTML = html;
+}
+
+function calculateActivityBonus() {
+    if(!user) return;
+    let todayBonus = 0; let totalBonus = 0; let todayStr = getStandardDateStr(new Date());
+    let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+    txArr.forEach(t => {
+        let typeStr = String(t.type).toLowerCase();
+        if(typeStr.includes('commission') || typeStr.includes('gift') || typeStr.includes('rebate') || typeStr.includes('red envelope') || typeStr.includes('deposit bonus')) {
+            let amt = parseFloat(t.amount) || 0; totalBonus += amt;
+            let tDateStr = getStandardDateStr(new Date(t.timestamp || t.date));
+            if(tDateStr === todayStr) { todayBonus += amt; }
+        }
+    });
+    document.getElementById('actTodayBonus').innerText = todayBonus.toFixed(2);
+    document.getElementById('actTotalBonus').innerText = totalBonus.toFixed(2);
+}
+
+function switchTab(t) {
+    document.querySelectorAll('.page-sec').forEach(e => e.classList.add('hidden-el')); 
+    if(document.getElementById('page-' + t)) document.getElementById('page-' + t).classList.remove('hidden-el');
+    document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('nav-active'); b.classList.replace('text-[#F3C326]', 'text-gray-400'); });
+    const active = document.getElementById('nav-' + t); 
+    if(active) { active.classList.add('nav-active'); active.classList.replace('text-gray-400', 'text-[#F3C326]'); }
+    if(t === 'wallet') setWalletTab('deposit');
+    if(t === 'promotion') fetchPromoData(); 
+}
+
+function openSettingsModal() { document.getElementById('settingName').value = user.name || ''; document.getElementById('settingPass').value = ''; document.getElementById('settingConfirmPass').value = ''; document.getElementById('settingsModal').classList.remove('hidden-el'); }
+function saveSettings() { const n = document.getElementById('settingName').value.trim(); const p = document.getElementById('settingPass').value; const cp = document.getElementById('settingConfirmPass').value; if (p) { if (p !== cp) return alert("Passwords do not match!"); user.pass = p; } if (n) { user.name = n; } database.ref('users/' + user.phone).set(user).then(() => { alert("Settings Updated Successfully!"); hideModal('settingsModal'); updateUI(); }); }
+function openAvatarModal() { const grid = document.getElementById('avatarGrid'); grid.innerHTML = ''; const seeds =['Felix', 'Aneka', 'Jocelyn', 'Robert', 'Luna', 'Midnight', 'Bandit', 'Oscar', 'Milo']; seeds.forEach(s => { const url = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s}`; grid.innerHTML += `<img onclick="saveAvatar('${url}')" src="${url}" class="w-20 h-20 rounded-full border-[3px] border-gray-100 hover:border-[#F3C326] cursor-pointer transition-all hover:scale-105 mx-auto bg-gray-50 shadow-sm">`; }); document.getElementById('avatarModal').classList.remove('hidden-el'); }
+function saveAvatar(url) { user.avatar = url; database.ref('users/' + user.phone + '/avatar').set(url).then(() => { hideModal('avatarModal'); updateUI(); }); }
+
+function switchMarket(m) {
+    currentMarket = m; let markets =['30s', '1m', '3m', '5m'];
+    let marketNames = { '30s': 'WinGo 30s', '1m': 'WinGo 1M', '3m': 'WinGo 3M', '5m': 'WinGo 5M' };
+    document.getElementById('winGoTitleDisplay').innerText = marketNames[m];
+    for (let i = 0; i < markets.length; i++) { document.getElementById('market-btn-' + markets[i]).classList.remove('market-btn-active'); document.getElementById('market-btn-' + markets[i]).classList.add('text-gray-500'); }
+    document.getElementById('market-btn-' + m).classList.remove('text-gray-500'); document.getElementById('market-btn-' + m).classList.add('market-btn-active');
+    globalCurrentPage = 1; chartCurrentPage = 1; personalHistoryCurrentPage = 1;
+    fetchHistory();
+}
+
+function toggleSound() { isSoundMuted = !isSoundMuted; const btn = document.getElementById('soundToggleBtn'); if(isSoundMuted) { btn.classList.remove('fa-volume-up'); btn.classList.add('fa-volume-mute', 'text-gray-500'); } else { btn.classList.add('fa-volume-up'); btn.classList.remove('fa-volume-mute', 'text-gray-500'); } }
+
+// =========================================================================
+// WINGO GAME LOGIC (100% Fixed - Instant Sync & Popup)
+// =========================================================================
+
+function checkPendingBetsAgainstHistory() {
+    if(!user || !user.betHistory) return;
+    let updated = false;
+    let totalWin = 0;
+    let totalLoss = 0;
+    let betsArr = Array.isArray(user.betHistory) ? user.betHistory : Object.values(user.betHistory);
+    
+    betsArr.forEach(b => {
+        if(b.status === 'PENDING' && (b.market || '30s') === currentMarket) {
+            let result = historyData.find(h => String(h.period) === String(b.period));
+            if(result) {
+                let num = parseInt(result.num);
+                let size = num >= 5 ? 'Big' : 'Small'; 
+                let isRed = [0,2,4,6,8].includes(num); 
+                let isGreen = [1,3,5,7,9].includes(num);
+                
+                let win = false; let mult = 0;
+                if(String(b.selection) === String(num)) { win = true; mult = 9; } 
+                else if(b.selection === size) { win = true; mult = 2; } 
+                else if(b.selection === 'Green' && isGreen) { win = true; mult = (num === 5 ? 1.5 : 2); } 
+                else if(b.selection === 'Red' && isRed) { win = true; mult = (num === 0 ? 1.5 : 2); } 
+                else if(b.selection === 'Violet' && (num === 0 || num === 5)) { win = true; mult = 4.5; }
+                
+                if(win) { 
+                    b.status = 'WIN'; 
+                    b.wonAmt = b.amount * mult * 0.98; 
+                    user.balance += b.wonAmt; 
+                    totalWin += b.wonAmt; 
+                } else { 
+                    b.status = 'LOSS'; 
+                    totalLoss += b.amount; 
+                }
+                updated = true;
+            }
+        }
+    });
+
+    if(updated) {
+        user.betHistory = betsArr;
+        database.ref('users/' + user.phone).set(user).then(() => {
+            updateUI();
+            if(!document.getElementById('gamePage').classList.contains('hidden-el')) {
+                if(totalWin > 0) showResultPopup('win', totalWin);
+                else if (totalLoss > 0) showResultPopup('loss', totalLoss);
+            }
+        });
+    }
+}
+
+function initTimer() {
+    if(gameTimerInterval) clearInterval(gameTimerInterval);
+    const tick = () => {
+        const nowMs = new Date().getTime() + serverOffset; const bdTime = new Date(nowMs + 21600000);
+        const y = bdTime.getUTCFullYear(); const m = String(bdTime.getUTCMonth() + 1).padStart(2, '0'); const d = String(bdTime.getUTCDate()).padStart(2, '0');
+        const dateStr = `${y}${m}${d}`; const totalSeconds = (bdTime.getUTCHours() * 3600) + (bdTime.getUTCMinutes() * 60) + bdTime.getUTCSeconds();
+
+        Object.keys(marketConfigs).forEach(marketKey => {
+            const conf = marketConfigs[marketKey]; const periodIdx = Math.floor(totalSeconds / conf.interval) + 1; const periodId = `${dateStr}${conf.prefix}${String(periodIdx).padStart(4,'0')}`;
+            
+            if (currentLivePeriods[marketKey] !== 0 && periodId !== currentLivePeriods[marketKey]) { 
+                processResult(marketKey, currentLivePeriods[marketKey]); 
+            } 
+            
+            currentLivePeriods[marketKey] = periodId;
+            
+            if (marketKey === currentMarket) {
+                document.getElementById('periodId').innerText = periodId;
+                const rem = conf.interval - (totalSeconds % conf.interval);
+                let minStr = Math.floor(rem / 60).toString().padStart(2, '0'); let secStr = (rem % 60).toString().padStart(2, '0');
+                document.getElementById('t-min-1').innerText = minStr[0]; document.getElementById('t-min-2').innerText = minStr[1]; document.getElementById('t-sec-1').innerText = secStr[0]; document.getElementById('t-sec-2').innerText = secStr[1];
+                
+                if (rem <= 5 && rem > 0) { 
+                    document.getElementById('bettingLockOverlay').classList.remove('hidden-el'); document.getElementById('countdown-digit-1').innerText = "0"; document.getElementById('countdown-digit-2').innerText = rem;
+                    if(!isSoundMuted && !document.getElementById('gamePage').classList.contains('hidden-el')) { let audio = document.getElementById('tickSound'); audio.currentTime = 0; audio.play().catch(e => {}); }
+                } else if (rem === 0) { 
+                    document.getElementById('bettingLockOverlay').classList.remove('hidden-el'); document.getElementById('countdown-digit-1').innerText = "0"; document.getElementById('countdown-digit-2').innerText = "0"; 
+                } else { 
+                    document.getElementById('bettingLockOverlay').classList.add('hidden-el'); 
+                }
+            }
+        });
+    }; 
+    tick(); gameTimerInterval = setInterval(tick, 1000);
+}
+
+function fetchHistory() { 
+    if(historyRef) historyRef.off(); 
+    historyRef = database.ref(`global_history/${currentMarket}`).limitToLast(50);
+    historyRef.on('value', s => { 
+        if(s.exists()) { 
+            historyData = Object.values(s.val()).sort((a,b) => parseInt(b.period) - parseInt(a.period)); 
+        } else { 
+            historyData = []; 
+        } 
+        updateDisplayData(); 
+        checkPendingBetsAgainstHistory(); 
+    }); 
+}
+
+function updateDisplayData() {
+    let displayData =[]; let activePeriod = currentLivePeriods[currentMarket];
+    if(activePeriod && activePeriod !== 0) {
+        let activeStr = String(activePeriod); let prefix = activeStr.substring(0, 10); let indexPart = parseInt(activeStr.substring(10)); 
+        for(let i = 1; i <= 50; i++) {
+            let currentIdx = indexPart - i; if (currentIdx <= 0) break; 
+            let p = prefix + String(currentIdx).padStart(4, '0'); let dbRecord = historyData.find(x => x.period === p); 
+            if(dbRecord) { displayData.push(dbRecord); } else { let seed = parseInt(p.substring(10)); let x = Math.sin(seed * 12.9898) * 43758.5453; let pseudoNum = Math.floor(Math.abs(x - Math.floor(x)) * 10); displayData.push({ period: p, num: pseudoNum, size: pseudoNum >= 5 ? 'Big' : 'Small' }); } 
+        }
+    } else { displayData = historyData.slice(0, 50); }
+    processedDisplayData = displayData;
+    let miniHtml = '';
+    for(let i=0; i<5; i++) { if(displayData[i]) { let n = displayData[i].num; let bg = n===0||n===5 ? 'bg-purple-600' : (n%2===0 ? 'bg-red-500' : 'bg-green-500'); miniHtml += `<div class="w-5 h-5 rounded-full ${bg} flex items-center justify-center text-[10px] border border-white/20 font-black shadow-sm text-white">${n}</div>`; } }
+    document.getElementById('recentBallsMini').innerHTML = miniHtml;
+    if(!document.getElementById('globalHistoryContainer').classList.contains('hidden-el')) { renderHistory(); } else if (!document.getElementById('chartHistoryContainer').classList.contains('hidden-el')) { renderChart(); }
+}
+
+async function processResult(marketKey, targetPeriod) {
+    try {
+        const snap = await database.ref(`global_history/${marketKey}/${targetPeriod}`).once('value'); 
+        if(snap.exists()) return; 
+        
+        let winningNum = 0; let forced = adminForcedResults[marketKey];
+        if(forced !== null && forced !== "") { winningNum = parseInt(forced); } 
+        else {
+            const betsSnap = await database.ref(`live_bets/${marketKey}/${targetPeriod}`).once('value'); const bets = betsSnap.val();
+            if (!bets) { winningNum = Math.floor(Math.random() * 10); } 
+            else {
+                let minPayout = Infinity; let bestNums =[];
+                for(let i = 0; i <= 9; i++) {
+                    let payout = 0; let size = i >= 5 ? 'Big' : 'Small'; let isRed =[0,2,4,6,8].includes(i); let isGreen =[1,3,5,7,9].includes(i); let isViolet = (i === 0 || i === 5);
+                    payout += (parseFloat(bets[String(i)]) || 0) * 9; payout += (parseFloat(bets[size]) || 0) * 2;
+                    if(isRed) payout += (parseFloat(bets['Red']) || 0) * (i === 0 ? 1.5 : 2); if(isGreen) payout += (parseFloat(bets['Green']) || 0) * (i === 5 ? 1.5 : 2); if(isViolet) payout += (parseFloat(bets['Violet']) || 0) * 4.5;
+                    if (payout < minPayout) { minPayout = payout; bestNums =[i]; } else if (payout === minPayout) { bestNums.push(i); }
+                }
+                winningNum = bestNums[Math.floor(Math.random() * bestNums.length)];
+            }
+        }
+        const size = winningNum >= 5 ? 'Big' : 'Small'; 
+        database.ref(`global_history/${marketKey}/${targetPeriod}`).transaction((currentData) => { 
+            if (currentData === null) return { period: targetPeriod, num: winningNum, size: size }; 
+            return; 
+        });
+    } catch(e) { console.error("Error processing result:", e); }
+}
+
+function selectBet(type) {
+    if (!document.getElementById('bettingLockOverlay').classList.contains('hidden-el')) return; 
+    currentBet = { type, amount: 1 }; const el = document.getElementById('selectedType'); el.innerText = type;
+    if(type == 'Green') el.className = 'text-4xl font-black uppercase text-green-500 drop-shadow-sm'; else if(type == 'Red') el.className = 'text-4xl font-black uppercase text-red-500 drop-shadow-sm'; else if(type == 'Violet') el.className = 'text-4xl font-black uppercase text-purple-500 drop-shadow-sm'; else el.className = 'text-4xl font-black uppercase text-gray-800 drop-shadow-sm';
+    let marketNames = { '30s': 'WinGo 30s', '1m': 'WinGo 1Min', '3m': 'WinGo 3Min', '5m': 'WinGo 5Min' };
+    document.getElementById('betMarketNameDisplay').innerText = marketNames[currentMarket]; document.getElementById('betConfirmModal').classList.remove('hidden-el');
+}
+
+function adjustBet(n) { let el = document.getElementById('finalAmount'); let v = parseInt(el.value) + n; if(v < 1) v = 1; el.value = v; }
+
+function confirmBet() {
+    const amt = parseInt(document.getElementById('finalAmount').value);
+    if(user.balance < amt) return alert("Insufficient Balance");
+    user.balance -= amt;
+    let currentWager = parseFloat(user.wager_left || 0); currentWager -= amt; if(currentWager < 0) currentWager = 0; user.wager_left = currentWager;
+    
+    let activePeriod = currentLivePeriods[currentMarket];
+    const bet = { market: currentMarket, period: activePeriod, selection: currentBet.type, amount: amt, status: 'PENDING', date: new Date().toISOString(), timestamp: Date.now() };
+    
+    if(!user.betHistory) user.betHistory =[]; let betsArr = Array.isArray(user.betHistory) ? user.betHistory : Object.values(user.betHistory); betsArr.unshift(bet); user.betHistory = betsArr;
+    database.ref(`live_bets/${currentMarket}/${activePeriod}/${currentBet.type}`).transaction(v => (parseFloat(v)||0)+amt); 
+    database.ref(`admin_live_bets/${currentMarket}/${activePeriod}`).push({ phone: user.phone, uid: user.uid, name: user.name || user.phone, selection: currentBet.type, amount: amt, timestamp: Date.now(), date: new Date().toISOString() });
+    
+    database.ref('users/' + user.phone).set(user); 
+    hideModal('betConfirmModal'); renderMyHistory();
+}
+
+function renderHistory() {
+    const con = document.getElementById('globalHistory'); 
+    if(!con) return;
+    const totalPages = Math.ceil(processedDisplayData.length / PAGE_SIZE) || 1;
+    if(globalCurrentPage > totalPages) globalCurrentPage = totalPages;
+    if(globalCurrentPage < 1) globalCurrentPage = 1;
+
+    const startIdx = (globalCurrentPage - 1) * PAGE_SIZE; 
+    const pageData = processedDisplayData.slice(startIdx, startIdx + PAGE_SIZE);
+    let html = '';
+    pageData.forEach(r => {
+        let num = parseInt(r.num); 
+        let colorClass = num===0||num===5 ? 'text-purple-500' : (num%2===0 ? 'text-red-500' : 'text-green-500');
+        let dots = ''; 
+        if(num===0) dots = `<span class="dot dot-red"></span><span class="dot dot-violet"></span>`; 
+        else if(num===5) dots = `<span class="dot dot-green"></span><span class="dot dot-violet"></span>`; 
+        else if(num%2===0) dots = `<span class="dot dot-red"></span>`; 
+        else dots = `<span class="dot dot-green"></span>`;
+        let sizeColor = 'text-gray-800';
+        
+        html += `<div class="flex justify-between items-center p-3 border-b border-gray-100 text-xs text-center hover:bg-gray-50 transition"><div class="w-2/5 text-gray-500 text-left pl-2 font-mono">${r.period}</div><div class="w-1/5 text-center text-[20px] font-black ${colorClass}">${num}</div><div class="w-1/5 text-center font-bold capitalize ${sizeColor}">${r.size}</div><div class="w-1/5 flex justify-center items-center gap-1">${dots}</div></div>`;
+    });
+    con.innerHTML = html; 
+    document.getElementById('pageIndicator').innerText = `${globalCurrentPage}/${totalPages}`;
+}
+
+function changePage(dir) { const totalPages = Math.ceil(processedDisplayData.length / PAGE_SIZE) || 1; globalCurrentPage += dir; if(globalCurrentPage < 1) globalCurrentPage = 1; if(globalCurrentPage > totalPages) globalCurrentPage = totalPages; renderHistory(); }
+
+function calculateChartStats(data) {
+    let missing = Array(10).fill(0); let avgMissing = Array(10).fill(0); let frequency = Array(10).fill(0); let maxConsecutive = Array(10).fill(0); let currConsecutive = Array(10).fill(0); let lastSeenIndex = Array(10).fill(-1); let gapSum = Array(10).fill(0);
+    for(let i = data.length - 1; i >= 0; i--) {
+        let n = parseInt(data[i].num); frequency[n]++;
+        for(let j = 0; j < 10; j++) { if(j === n) { currConsecutive[j]++; if(currConsecutive[j] > maxConsecutive[j]) maxConsecutive[j] = currConsecutive[j]; } else { currConsecutive[j] = 0; } }
+        let periodIndex = (data.length - 1) - i; if(lastSeenIndex[n] !== -1) { gapSum[n] += (periodIndex - lastSeenIndex[n] - 1); } lastSeenIndex[n] = periodIndex;
+    }
+    let topIndex = data.length - 1;
+    for(let j = 0; j < 10; j++) { if(lastSeenIndex[j] !== -1) { missing[j] = topIndex - lastSeenIndex[j]; avgMissing[j] = frequency[j] > 1 ? Math.floor(gapSum[j] / (frequency[j] - 1)) : missing[j]; } else { missing[j] = data.length; avgMissing[j] = data.length; } }
+    return { missing, avgMissing, frequency, maxConsecutive };
+}
+
+function renderStatRow(title, arr, colorCls) { let h = `<div class="grid grid-cols-[1fr_repeat(10,1fr)] gap-1 text-center items-center py-1"><div class="text-left font-bold text-gray-500 text-[9px] uppercase tracking-wider">${title}</div>`; for(let i = 0; i < 10; i++) { h += `<div class="font-bold ${colorCls} text-[10px]">${arr[i]}</div>`; } h += `</div>`; return h; }
+
+function renderChart() {
+    if(processedDisplayData.length === 0) return;
+    const stats = calculateChartStats(processedDisplayData);
+    let statsHtml = `<div class="grid grid-cols-[1fr_repeat(10,1fr)] gap-1 text-center items-center mb-3 pb-3 border-b border-gray-100"><div class="text-left font-black text-gray-800 text-[10px] uppercase tracking-wider">Statistic</div>`; for(let i = 0; i < 10; i++) { statsHtml += `<div class="font-black text-gray-600 rounded-full border border-gray-200 w-[20px] h-[20px] mx-auto flex items-center justify-center text-[10px] bg-gray-50 shadow-sm">${i}</div>`; } statsHtml += `</div>`;
+    statsHtml += renderStatRow('Missing', stats.missing, 'text-gray-400'); statsHtml += renderStatRow('Avg missing', stats.avgMissing, 'text-gray-500'); statsHtml += renderStatRow('Frequency', stats.frequency, 'text-[#F3C326]'); statsHtml += renderStatRow('Max consec.', stats.maxConsecutive, 'text-gray-400');
+    document.getElementById('chartStats').innerHTML = statsHtml;
+
+    const totalPages = Math.ceil(processedDisplayData.length / PAGE_SIZE) || 1;
+    if(chartCurrentPage > totalPages) chartCurrentPage = totalPages;
+    const startIdx = (chartCurrentPage - 1) * PAGE_SIZE; const pageData = processedDisplayData.slice(startIdx, startIdx + PAGE_SIZE);
+    
+    let rowsHtml = '';
+    pageData.forEach(r => {
+        let num = parseInt(r.num); let sizeClass = r.size === 'Big' ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'; let sizeLetter = r.size === 'Big' ? 'B' : 'S';
+        rowsHtml += `<div class="grid grid-cols-[auto_1fr_auto] gap-2 items-center py-2.5 border-b border-gray-100"><div class="text-[10px] text-gray-500 font-mono w-[95px]">${r.period}</div><div class="grid grid-cols-10 gap-1 text-center relative z-10 w-full max-w-[200px] mx-auto">`;
+        for(let i = 0; i < 10; i++) {
+            if(i === num) { let bg = num===0||num===5 ? 'bg-purple-500' : (num%2===0 ? 'bg-red-500' : 'bg-green-500'); if(num===0) bg = 'bg-gradient-to-br from-red-500 to-purple-500'; if(num===5) bg = 'bg-gradient-to-br from-green-500 to-purple-500'; rowsHtml += `<div class="mx-auto w-[20px] h-[20px] rounded-full ${bg} text-white font-bold flex items-center justify-center text-[10px] shadow-sm chart-win-num">${i}</div>`; } 
+            else { rowsHtml += `<div class="mx-auto w-[20px] h-[20px] rounded-full text-gray-300 flex items-center justify-center text-[10px] font-bold">${i}</div>`; }
+        }
+        rowsHtml += `</div><div class="w-5 h-5 rounded-sm flex items-center justify-center text-[10px] font-black ${sizeClass} shadow-sm">${sizeLetter}</div></div>`;
+    });
+    document.getElementById('chartRows').innerHTML = rowsHtml; document.getElementById('chartPageIndicator').innerText = `${chartCurrentPage}/50`;
+    setTimeout(drawTrendLines, 50);
+}
+
+function drawTrendLines() {
+    const canvas = document.getElementById('chartLineCanvas'); const drawBox = document.getElementById('chartDrawBox'); 
+    if(!canvas || !drawBox) return; canvas.setAttribute('width', drawBox.offsetWidth); canvas.setAttribute('height', drawBox.offsetHeight);
+    const winElements = document.querySelectorAll('.chart-win-num'); const boxRect = drawBox.getBoundingClientRect(); let svgHTML = '';
+    for(let i = 0; i < winElements.length - 1; i++) {
+        const el1 = winElements[i]; const el2 = winElements[i+1]; const rect1 = el1.getBoundingClientRect(); const rect2 = el2.getBoundingClientRect();
+        const x1 = rect1.left - boxRect.left + (rect1.width / 2); const y1 = rect1.top - boxRect.top + (rect1.height / 2); const x2 = rect2.left - boxRect.left + (rect2.width / 2); const y2 = rect2.top - boxRect.top + (rect2.height / 2);
+        svgHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#F3C326" stroke-width="1.5" opacity="0.6" />`;
+    }
+    canvas.innerHTML = svgHTML;
+}
+
+function changeChartPage(dir) { const totalPages = Math.ceil(processedDisplayData.length / PAGE_SIZE) || 1; chartCurrentPage += dir; if(chartCurrentPage < 1) chartCurrentPage = 1; if(chartCurrentPage > totalPages) chartCurrentPage = totalPages; renderChart(); }
+
+function toggleGameTab(t) { 
+    document.getElementById('globalHistoryContainer').classList.add('hidden-el'); 
+    document.getElementById('chartHistoryContainer').classList.add('hidden-el'); 
+    document.getElementById('personalHistoryContainer').classList.add('hidden-el');
+    
+    document.getElementById('tabGlobal').className = "flex-1 py-3 text-gray-500 bg-transparent font-bold text-xs uppercase tracking-wider transition hover:text-gray-800"; 
+    document.getElementById('tabChart').className = "flex-1 py-3 text-gray-500 bg-transparent font-bold text-xs uppercase tracking-wider transition hover:text-gray-800"; 
+    document.getElementById('tabPersonal').className = "flex-1 py-3 text-gray-500 bg-transparent font-bold text-xs uppercase tracking-wider transition hover:text-gray-800";
+    
+    if(t === 'global') { 
+        document.getElementById('globalHistoryContainer').classList.remove('hidden-el'); 
+        document.getElementById('tabGlobal').className = "flex-1 py-3 bg-[#F3C326] text-white rounded-xl font-black text-xs uppercase tracking-wider shadow-sm transition"; 
+        renderHistory(); 
+    } 
+    else if(t === 'chart') { 
+        document.getElementById('chartHistoryContainer').classList.remove('hidden-el'); 
+        document.getElementById('tabChart').className = "flex-1 py-3 bg-[#F3C326] text-white rounded-xl font-black text-xs uppercase tracking-wider shadow-sm transition"; 
+        renderChart(); 
+    } 
+    else if (t === 'personal') { 
+        document.getElementById('personalHistoryContainer').classList.remove('hidden-el'); 
+        document.getElementById('tabPersonal').className = "flex-1 py-3 bg-[#F3C326] text-white rounded-xl font-black text-xs uppercase tracking-wider shadow-sm transition"; 
+        renderMyHistory(); 
+    } 
+}
+
+function renderMyHistory() {
+    const div = document.getElementById('personalHistory'); 
+    if(!div) return;
+    if(!user || !user.betHistory) { div.innerHTML = '<div class="text-center text-gray-400 mt-6 font-bold pb-6">No bets yet.</div>'; return; }
+    
+    let betsArr = Array.isArray(user.betHistory) ? user.betHistory : Object.values(user.betHistory); 
+    betsArr = betsArr.filter(b => (b.market || '30s') === currentMarket);
+
+    const totalPages = Math.ceil(betsArr.length / PAGE_SIZE) || 1;
+    if(personalHistoryCurrentPage > totalPages) personalHistoryCurrentPage = totalPages;
+    if(personalHistoryCurrentPage < 1) personalHistoryCurrentPage = 1;
+
+    const startIdx = (personalHistoryCurrentPage - 1) * PAGE_SIZE;
+    const pageData = betsArr.slice(startIdx, startIdx + PAGE_SIZE);
+
+    let html = '';
+    pageData.forEach(b => { 
+        let isWin = b.status === 'WIN';
+        let isPending = b.status === 'PENDING';
+        
+        let colorBg = 'bg-gray-400';
+        if (b.selection === 'Green') colorBg = 'bg-green-500';
+        else if (b.selection === 'Red') colorBg = 'bg-red-500';
+        else if (b.selection === 'Violet') colorBg = 'bg-purple-500';
+        else if (b.selection === 'Big') colorBg = 'bg-orange-500';
+        else if (b.selection === 'Small') colorBg = 'bg-blue-500';
+        else if (!isNaN(parseInt(b.selection))) {
+            let num = parseInt(b.selection);
+            colorBg = num===0||num===5 ? 'bg-purple-500' : (num%2===0 ? 'bg-red-500' : 'bg-green-500');
+        }
+
+        let stClass = isWin ? 'text-green-500 border-green-500' : (isPending ? 'text-[#F3C326] border-[#F3C326]' : 'text-red-500 border-red-500');
+        let stText = isWin ? 'Succeed' : (isPending ? 'Pending' : 'Failed');
+        let amtStr = isWin ? '+৳' + (b.wonAmt||0).toFixed(2) : (isPending ? '৳' + b.amount : '-৳' + b.amount);
+
+        html += `
+        <div class="flex items-center justify-between p-3 border border-gray-100 bg-white mb-2 rounded-xl shadow-sm">
+            <div class="w-[50px] h-[50px] rounded-xl flex items-center justify-center text-white font-black text-sm shadow-inner ${colorBg}">
+                ${b.selection}
+            </div>
+            <div class="flex-1 px-4">
+                <div class="text-gray-800 font-bold text-[14px] flex items-center gap-1">${b.period}</div>
+                <div class="text-gray-400 text-[11px] font-medium mt-0.5">${(b.date || '').replace('T', ' ').substring(0,19)}</div>
+            </div>
+            <div class="text-right flex flex-col items-end">
+                <div class="text-[11px] font-bold px-3 py-0.5 rounded border ${stClass} bg-white mb-1 tracking-wider inline-block">${stText}</div>
+                <div class="${stClass.split(' ')[0]} font-black text-[14px] drop-shadow-sm">${amtStr}</div>
+            </div>
+        </div>`;
+    }); 
+    
+    if(html === '') { html = '<div class="text-center text-gray-400 mt-6 font-bold pb-6">No bets yet.</div>'; document.getElementById('personalPagination').classList.add('hidden-el'); } 
+    else { document.getElementById('personalPagination').classList.remove('hidden-el'); document.getElementById('personalPageIndicator').innerText = `${personalHistoryCurrentPage}/${totalPages}`; }
+    div.innerHTML = html;
+}
+
+function changePersonalPage(dir) { personalHistoryCurrentPage += dir; renderMyHistory(); }
+
+function showResultPopup(type, amt) { 
+    const popup = document.getElementById('resultPopup'); const header = document.getElementById('resHeader'); const title = document.getElementById('resTitle'); const icon = document.getElementById('resIcon'); const msg = document.getElementById('resMsg'); const amountEl = document.getElementById('resAmount'); const confettiCon = document.getElementById('confettiContainer'); 
+    if(type === 'win') { 
+        header.className = "h-44 flex items-center justify-center flex-col relative overflow-hidden bg-gradient-to-b from-green-500 to-green-600"; title.innerText = "WIN"; icon.innerText = "🏆"; msg.innerText = "CONGRATULATIONS! YOU WON"; msg.className = "text-green-600 font-black text-[10px] uppercase tracking-widest mb-3"; amountEl.innerText = "+ ৳" + amt.toFixed(2); amountEl.className = "text-5xl font-black mb-8 tracking-tighter text-green-600 drop-shadow-sm"; 
+        let html = ''; for(let i=0; i<30; i++) { let left = Math.random() * 100; let animDelay = Math.random() * 2; html += `<div class="confetti" style="left:${left}%; animation-delay:${animDelay}s;"></div>`; } confettiCon.innerHTML = html; 
+    } else { 
+        header.className = "h-44 flex items-center justify-center flex-col relative overflow-hidden bg-gradient-to-b from-gray-700 to-gray-900"; title.innerText = "LOSS"; icon.innerText = "💔"; msg.innerText = "BAD LUCK! YOU LOST"; msg.className = "text-gray-500 font-black text-[10px] uppercase tracking-widest mb-3"; amountEl.innerText = "- ৳" + amt.toFixed(2); amountEl.className = "text-5xl font-black mb-8 tracking-tighter text-gray-800"; confettiCon.innerHTML = ''; 
+    } 
+    popup.classList.remove('hidden-el'); 
+}
+function closeResultPopup() { document.getElementById('resultPopup').classList.add('hidden-el'); document.getElementById('confettiContainer').innerHTML = ''; }
+
+function addLiveWinner() { 
+    const container = document.getElementById('liveWinningFeed'); if(!container) return; 
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; const name = 'Mem***' + chars.charAt(Math.floor(Math.random()*26)) + chars.charAt(Math.floor(Math.random()*26)) + chars.charAt(Math.floor(Math.random()*26)); 
+    const amt = (Math.random() * 5000 + 500).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+    const avatar = `https://i.pravatar.cc/100?img=${Math.floor(Math.random() * 70) + 1}`; 
+    const el = document.createElement('div'); el.className = 'win-item-anim bg-white border-b border-gray-50 p-3 flex items-center justify-between shadow-sm'; el.innerHTML = `<div class="flex items-center gap-4 w-full"><img src="${avatar}" class="w-12 h-12 rounded-lg object-cover shadow-sm border border-gray-100"><div class="flex flex-col justify-center flex-1 space-y-1"><div class="flex justify-between items-center w-full"><span class="text-[13px] text-gray-500 font-medium">User</span><span class="text-[13px] font-bold text-gray-700">${name}</span></div><div class="flex justify-between items-center w-full"><span class="text-[13px] text-gray-500 font-medium">Winning amount</span><span class="text-[14px] font-black text-[#22c55e]">৳${amt}</span></div></div></div>`; 
+    container.prepend(el); if(container.children.length > 5) { container.removeChild(container.lastChild); } 
+}
+function startLiveWinners() { if(liveWinnerInterval) clearInterval(liveWinnerInterval); for(let i=0; i<5; i++) addLiveWinner(); liveWinnerInterval = setInterval(addLiveWinner, 2500); }
+
+function renderDailyLeaderboard() { 
+    const container = document.getElementById('dailyLeaderboardList'); if(!container) return; 
+    const baseAmounts =[8857439.92, 8820000.00, 7635964.00, 4650285.88, 3816708.00, 787818.08, 691880.00, 547820.00, 530572.00, 416135.55]; 
+    let users =[];
+    for(let i=0; i<10; i++) { 
+        let nameStr = 'Mem***' + String.fromCharCode(65 + Math.floor(Math.random()*26)) + String.fromCharCode(65 + Math.floor(Math.random()*26)) + String.fromCharCode(65 + Math.floor(Math.random()*26));
+        if(i===0) nameStr = 'Mas***rd'; if(i===1) nameStr = 'ITS***HAD'; if(i===2) nameStr = 'BOS***DI';
+        let amt = baseAmounts[i]; let avatar = `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70) + 1}`; users.push({name: nameStr, amt: amt.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}), avatar: avatar});
+    }
+    let podiumHtml = `<div class="flex items-end justify-center gap-2 mb-6 mt-6"><div class="flex flex-col items-center w-[30%] relative"><div class="absolute -top-7 text-3xl opacity-90 drop-shadow-md text-gray-300"><i class="fas fa-crown"></i></div><img src="${users[1].avatar}" class="w-16 h-16 rounded-full border-[3px] border-[#b0c4de] z-10 bg-white object-cover shadow"><div class="bg-gradient-to-b from-[#c5d5e6] to-[#9eb5ce] w-full pt-6 pb-2 rounded-t-xl -mt-4 text-center text-white shadow-md border-x border-t border-white/40"><div class="bg-white/40 rounded-full text-[10px] font-black w-3/4 mx-auto mb-1 text-blue-900 shadow-sm">NO2</div><div class="text-[10px] font-bold truncate px-1 text-gray-800">${users[1].name}</div><div class="bg-white/30 text-gray-800 text-[10px] font-black rounded-full px-1 mx-1 mt-1 truncate">৳${users[1].amt}</div></div></div><div class="flex flex-col items-center w-[36%] relative z-20"><div class="absolute -top-9 text-5xl text-[#F3C326] drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] animate-pulse"><i class="fas fa-crown"></i></div><img src="${users[0].avatar}" class="w-20 h-20 rounded-full border-4 border-[#F3C326] z-10 bg-white shadow-lg object-cover"><div class="bg-gradient-to-b from-[#ff758c] to-[#ff7eb3] w-full pt-8 pb-3 rounded-t-[1.25rem] -mt-6 text-center text-white shadow-xl border-x border-t border-white/40"><div class="bg-[#F3C326] rounded-full text-[11px] font-black w-2/3 mx-auto mb-1 text-yellow-900 shadow-md">NO1</div><div class="text-[12px] font-bold truncate px-1 text-white">${users[0].name}</div><div class="bg-white/30 text-white text-[10px] font-black rounded-full px-2 py-0.5 mx-1 mt-1 truncate">৳${users[0].amt}</div></div></div><div class="flex flex-col items-center w-[30%] relative"><div class="absolute -top-7 text-3xl opacity-90 drop-shadow-md text-amber-600"><i class="fas fa-crown"></i></div><img src="${users[2].avatar}" class="w-16 h-16 rounded-full border-[3px] border-[#cd7f32] z-10 bg-white object-cover shadow"><div class="bg-gradient-to-b from-[#f6d365] to-[#fda085] w-full pt-6 pb-2 rounded-t-xl -mt-4 text-center text-white shadow-md border-x border-t border-white/40"><div class="bg-white/40 rounded-full text-[10px] font-black w-3/4 mx-auto mb-1 text-amber-900 shadow-sm">NO3</div><div class="text-[10px] font-bold truncate px-1 text-gray-800">${users[2].name}</div><div class="bg-white/30 text-gray-800 text-[10px] font-black rounded-full px-1 mx-1 mt-1 truncate">৳${users[2].amt}</div></div></div></div>`;
+    let listHtml = '<div class="space-y-3">';
+    for(let i=3; i<10; i++) { listHtml += `<div class="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:bg-gray-50 hover:shadow-md transition"><div class="flex items-center gap-3"><span class="text-gray-400 font-black text-lg w-6 text-center drop-shadow-sm">${i+1}</span><img src="${users[i].avatar}" class="w-10 h-10 rounded-full object-cover shadow-sm border border-gray-100"><span class="text-[13px] font-bold text-gray-700">${users[i].name}</span></div><div class="bg-gradient-to-r from-[#4ade80] to-[#16a34a] text-white px-3 py-1.5 rounded-full text-[12px] font-black shadow-sm">৳${users[i].amt}</div></div>`; }
+    listHtml += '</div>';
+    container.innerHTML = podiumHtml + listHtml; 
+}
+
+function checkCommissionTransfer() {
+    if(!user || !user.referrals) return;
+    if (parseFloat(user.referrals.commission) > 0) {
+        const comm = parseFloat(user.referrals.commission); user.balance = (parseFloat(user.balance) || 0) + comm; user.referrals.commission = 0;
+        if(!user.transactions) user.transactions =[]; let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+        txArr.unshift({ type: 'Commission Bonus', amount: comm, method: 'System', status: 'Complete', date: new Date().toLocaleString(), timestamp: Date.now(), orderNum: 'COM' + Date.now() });
+        user.transactions = txArr; database.ref('users/'+user.phone).set(user);
+    }
+}
+
+function fetchPromoData() {
+    database.ref('users').on('value', snap => {
+        if(snap.exists()) {
+            allUsersDataCache = snap.val();
+            if(!document.getElementById('page-promotion').classList.contains('hidden-el')) { calculateAndRenderPromoStats(); }
+        }
+    });
+}
+
+function togglePromoTab(tab) { if(tab === 'direct') { document.getElementById('promo-tab-direct').className = "flex-1 py-3 text-[#F3C326] cursor-pointer border-b-2 border-[#F3C326]"; document.getElementById('promo-tab-team').className = "flex-1 py-3 text-gray-500 bg-gray-50 cursor-pointer border-b-2 border-transparent"; document.getElementById('promo-content-direct').classList.remove('hidden-el'); document.getElementById('promo-content-team').classList.add('hidden-el'); } else { document.getElementById('promo-tab-team').className = "flex-1 py-3 text-[#F3C326] cursor-pointer border-b-2 border-[#F3C326]"; document.getElementById('promo-tab-direct').className = "flex-1 py-3 text-gray-500 bg-gray-50 cursor-pointer border-b-2 border-transparent"; document.getElementById('promo-content-team').classList.remove('hidden-el'); document.getElementById('promo-content-direct').classList.add('hidden-el'); } }
+
+function calculateAndRenderPromoStats() {
+    if(!allUsersDataCache || !user) return;
+    let targetDateStr = getStandardDateStr(new Date()); let yestDate = new Date(); yestDate.setDate(yestDate.getDate() - 1); let yestDateStr = getStandardDateStr(yestDate);
+    let myUidStr = String(user.uid); let lv1 =[], lv2 =[], lv3 =[];
+    Object.values(allUsersDataCache).forEach(u => { if(String(u.referrer) === myUidStr) lv1.push(u); }); let lv1Uids = lv1.map(u => String(u.uid));
+    Object.values(allUsersDataCache).forEach(u => { if(lv1Uids.includes(String(u.referrer))) lv2.push(u); }); let lv2Uids = lv2.map(u => String(u.uid));
+    Object.values(allUsersDataCache).forEach(u => { if(lv2Uids.includes(String(u.referrer))) lv3.push(u); });
+    let allTeam =[...lv1, ...lv2, ...lv3];
+    let dirReg = lv1.length, dirDepNum = 0, dirDepAmt = 0; let teamReg = allTeam.length, teamDepNum = 0, teamDepAmt = 0;
+
+    lv1.forEach(u => { let hasDeposited = false; if(u.transactions) { let txs = Array.isArray(u.transactions) ? u.transactions : Object.values(u.transactions); txs.forEach(t => { if(t.type === 'Deposit' &&['accepted','complete','success'].includes(String(t.status).toLowerCase())) { dirDepAmt += parseFloat(t.amount); hasDeposited = true; } }); } if(hasDeposited) dirDepNum++; });
+    allTeam.forEach(u => { let hasDeposited = false; if(u.transactions) { let txs = Array.isArray(u.transactions) ? u.transactions : Object.values(u.transactions); txs.forEach(t => { if(t.type === 'Deposit' &&['accepted','complete','success'].includes(String(t.status).toLowerCase())) { teamDepAmt += parseFloat(t.amount); hasDeposited = true; } }); } if(hasDeposited) teamDepNum++; });
+
+    document.getElementById('st_dir_reg').innerText = dirReg; document.getElementById('st_dir_depNum').innerText = dirDepNum; document.getElementById('st_dir_depAmt').innerText = dirDepAmt.toFixed(2); 
+    document.getElementById('st_team_reg').innerText = teamReg; document.getElementById('st_team_depNum').innerText = teamDepNum; document.getElementById('st_team_depAmt').innerText = teamDepAmt.toFixed(2); 
+
+    let totalComm = 0; let yestComm = 0; let todayComm = 0;
+    let todayStr = getStandardDateStr(new Date()); let y = new Date(); y.setDate(y.getDate() - 1); let yestStr = getStandardDateStr(y);
+
+    if(user.transactions) { let txs = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions); txs.forEach(t => { if(String(t.type).toLowerCase().includes('commission')) { let tDateStr = getStandardDateStr(new Date(t.timestamp || t.date)); let amt = parseFloat(t.amount) || 0; totalComm += amt; if(tDateStr === yestStr) yestComm += amt; if(tDateStr === todayStr) todayComm += amt; } }); }
+
+    document.getElementById('yesterdayComm').innerText = yestComm.toFixed(2); document.getElementById('promo-this-week').innerText = todayComm.toFixed(2); document.getElementById('promo-total-comm').innerText = totalComm.toFixed(2); document.getElementById('promo-dir-sub').innerText = dirReg; document.getElementById('promo-total-sub').innerText = teamReg;
+}
+
+function setWalletTab(t) { 
+    document.getElementById('view-deposit').classList.add('hidden-el'); document.getElementById('view-withdraw').classList.add('hidden-el'); 
+    const depBtn = document.getElementById('wTab-deposit'); const witBtn = document.getElementById('wTab-withdraw'); 
+    if(t === 'deposit') { depBtn.className = "flex-1 py-2 rounded text-sm transition-all bg-white text-[#F3C326] font-bold shadow-sm"; witBtn.className = "flex-1 py-2 rounded text-sm transition-all text-white font-medium hover:text-white"; } 
+    else { witBtn.className = "flex-1 py-2 rounded text-sm transition-all bg-white text-[#F3C326] font-bold shadow-sm"; depBtn.className = "flex-1 py-2 rounded text-sm transition-all text-white font-medium hover:text-white"; } 
+    document.getElementById('view-'+t).classList.remove('hidden-el'); 
+}
+
+function checkAndShowBindWallet() { if(user.wallet) return alert("Wallet Bound: " + user.wallet.type + " - " + user.wallet.num); document.getElementById('bindWalletModal').classList.remove('hidden-el'); }
+function setBindType(t) { document.getElementById('walletType').value = t; document.getElementById('bind-Bkash').classList.remove('border-[#F3C326]', 'text-[#F3C326]'); document.getElementById('bind-Nagad').classList.remove('border-[#F3C326]', 'text-[#F3C326]'); document.getElementById('bind-'+t).classList.add('border-[#F3C326]', 'text-[#F3C326]'); }
+function saveWallet() { const type = document.getElementById('walletType').value; const num = document.getElementById('walletNum').value; if(!num || !type) return alert("Select Type & Enter Number"); user.wallet = { type, num }; database.ref('users/' + user.phone).set(user); hideModal('bindWalletModal'); alert("Bound Successfully"); updateUI(); }
+
+function getLiveNumber(methodName) { if(!depositNumbers) return "Contact Admin"; if(methodName === 'Bkash') { return depositNumbers.Bkash || depositNumbers.bkash || depositNumbers.BKASH || depositNumbers.bKash || "Not Found"; } else if (methodName === 'Nagad') { return depositNumbers.Nagad || depositNumbers.nagad || depositNumbers.NAGAD || "Not Found"; } return "Contact Admin"; }
+
+function selectTopMethod(m) { selectedTopMethod = m; document.getElementById('top-m-Bkash').classList.remove('top-method-active'); document.getElementById('top-m-Nagad').classList.remove('top-method-active'); document.getElementById('top-m-'+m).classList.add('top-method-active'); updateChannelList(m); }
+function updateChannelList(method) { const grid = document.getElementById('channelGrid'); grid.innerHTML = ''; const channels = channelData[method]; channels.forEach((ch, index) => { const isActive = index === 0 ? 'bg-yellow-50 text-[#F3C326] border-[#F3C326]' : 'bg-gray-50 border-transparent'; if(index === 0) selectedChannel = ch.name; grid.innerHTML += `<div onclick="selectChannel(this, '${ch.name}')" class="channel-card-new p-3 border rounded-xl text-xs font-bold text-center cursor-pointer transition ${isActive}">${ch.name}</div>`; }); }
+function selectChannel(el, chName) { selectedChannel = chName; document.querySelectorAll('.channel-card-new').forEach(e => { e.classList.remove('bg-yellow-50', 'text-[#F3C326]', 'border-[#F3C326]'); e.classList.add('bg-gray-50', 'border-transparent'); }); el.classList.remove('bg-gray-50', 'border-transparent'); el.classList.add('bg-yellow-50', 'text-[#F3C326]', 'border-[#F3C326]'); }
+function setDepAmount(a) { document.getElementById('newDepAmountInput').value = a; document.querySelectorAll('.amt-btn').forEach(b => { b.classList.remove('amt-btn-active', 'bg-yellow-50', 'text-[#F3C326]', 'border-[#F3C326]'); }); const btn = document.getElementById('amt-btn-'+a); if(btn) btn.classList.add('amt-btn-active', 'bg-yellow-50', 'text-[#F3C326]', 'border-[#F3C326]'); }
+function removeActiveAmtBtn() { document.querySelectorAll('.amt-btn').forEach(b => { b.classList.remove('amt-btn-active', 'bg-yellow-50', 'text-[#F3C326]', 'border-[#F3C326]'); }); }
+
+function initiateDeposit() { const amt = document.getElementById('newDepAmountInput').value; if(amt < 100) return alert("Minimum deposit is 100 BDT"); openGatewayModal(amt, selectedTopMethod); }
+
+function openGatewayModal(amount, method) {
+    document.getElementById('gtAmountStr').innerText = amount; const box = document.getElementById('gtColorBox'); const iconWrapper = document.getElementById('gtMethodIconWrapper'); const methodNameText = document.getElementById('gtMethodNameText');
+    if(method === 'Bkash') { box.style.backgroundColor = '#e2136e'; iconWrapper.className = 'flex items-center gap-1 text-[#e2136e] font-bold text-[16px] drop-shadow-sm'; iconWrapper.innerHTML = `<svg class="w-5 h-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="15" fill="#E2136E"/><polygon points="25,35 50,55 25,75" fill="#FFFFFF"/><polygon points="50,55 75,35 100,55 75,75" fill="#FFFFFF"/></svg> bKash`; methodNameText.innerText = 'বিকাশ'; } 
+    else { box.style.backgroundColor = '#f6921e'; iconWrapper.className = 'flex items-center gap-1 text-[#f6921e] font-bold text-[16px] drop-shadow-sm'; iconWrapper.innerHTML = `<svg class="w-5 h-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="15" fill="#ED1C24"/><path d="M50 20 A30 30 0 1 1 20 50" fill="none" stroke="#F7931E" stroke-width="12" stroke-linecap="round"/><path d="M50 35 A15 15 0 1 1 35 50" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#F7931E"/></svg> Nagad`; methodNameText.innerText = 'নগদ'; }
+    document.getElementById('gtAdminPhone').innerText = getLiveNumber(method); document.getElementById('depTrx').value = ""; document.getElementById('gtCurrentTime').innerText = new Date().toLocaleString('en-US'); document.getElementById('gatewayModal').classList.remove('hidden-el');
+}
+
+function submitGateway() {
+    const amt = parseFloat(document.getElementById('gtAmountStr').innerText); const trx = document.getElementById('depTrx').value.trim();
+    if(!trx) return alert("দয়া করে TrxID দিন!");
+    if(!user.transactions) user.transactions =[]; let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+    const orderNum = "RC" + new Date().getTime() + Math.floor(Math.random() * 1000); 
+    txArr.unshift({ type: 'Deposit', amount: amt, method: selectedTopMethod, channel: selectedChannel, trx: trx, status: 'Pending', date: new Date().toLocaleString(), timestamp: Date.now(), orderNum: orderNum, wagerAdded: false });
+    user.transactions = txArr; database.ref('users/' + user.phone).set(user);
+    alert("আপনার সেন্ড মানি রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে।"); hideModal('gatewayModal'); document.getElementById('newDepAmountInput').value = ""; removeActiveAmtBtn(); showHistoryModal('Deposit');
+}
+
+function copyText(text, type) { navigator.clipboard.writeText(text); alert(type + " কপি করা হয়েছে!"); }
+
+function initiateWithdraw() { 
+    if(!user.wallet) return alert("Bind Wallet First!"); 
+    const amt = parseFloat(document.getElementById('newWithAmountInput').value); if(isNaN(amt) || amt < 500) return alert("Min Withdrawal 500"); if(user.balance < amt) return alert("Low Balance"); 
+    let left = parseFloat(user.wager_left || 0); if(left > 0) return alert("Turnover Pending! You must bet ৳" + left.toFixed(2) + " more to withdraw."); 
+    user.balance -= amt; if(!user.transactions) user.transactions =[]; let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions); 
+    const orderNum = "WD" + new Date().getTime() + Math.floor(Math.random() * 1000); txArr.unshift({ type: 'Withdraw', amount: amt, method: user.wallet.type, status: 'Pending', date: new Date().toLocaleString(), timestamp: Date.now(), orderNum: orderNum }); user.transactions = txArr; 
+    database.ref('withdraw_requests').push({ phone: user.phone, uid: user.uid, amount: amt, method: user.wallet.type, number: user.wallet.num, status: 'Pending', date: new Date().toLocaleString(), timestamp: Date.now() }); database.ref('users/' + user.phone).set(user); 
+    alert("Withdraw Request Sent!"); document.getElementById('newWithAmountInput').value = ""; showHistoryModal('Withdraw');
+}
+
+function showHistoryModal(type) { 
+    document.getElementById('historyModalTitle').innerText = type + " History"; const content = document.getElementById('historyListContent'); let html = ''; 
+    if(user.transactions) { 
+        let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions); 
+        txArr.filter(t => t.type === type).forEach(t => { 
+            let st = String(t.status).toLowerCase(); let statusText = 'Pending'; let statusColor = 'text-blue-500'; 
+            if(['accepted','complete','success'].includes(st)) { statusText = 'Complete'; statusColor = 'text-green-500'; } else if(st === 'rejected' || st === 'failed') { statusText = 'Failed'; statusColor = 'text-red-500'; } 
+            let orderNum = t.orderNum || ('TRX' + Math.floor(Math.random() * 1000000)); let channelType = t.channel || t.method || 'System'; 
+            html += `<div class="bg-white border border-gray-100 rounded-xl mb-3 shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition"><div class="flex justify-between items-center p-4 border-b border-gray-50"><span class="bg-gray-100 text-gray-800 text-[10px] px-3 py-1.5 rounded shadow-sm font-black uppercase tracking-widest">${t.type}</span><span class="${statusColor} text-[11px] font-black uppercase tracking-widest drop-shadow-sm">${statusText}</span></div><div class="p-4 text-[12px] text-gray-500 space-y-3 font-bold"><div class="flex justify-between"><span>Amount</span><span class="text-[#F3C326] font-black text-sm drop-shadow-sm">৳${parseFloat(t.amount).toFixed(2)}</span></div><div class="flex justify-between"><span>Type</span><span class="text-gray-700">${channelType}</span></div><div class="flex justify-between"><span>Time</span><span class="text-gray-700">${t.date || new Date(t.timestamp).toLocaleString()}</span></div><div class="flex justify-between items-center"><span>Order Num</span><div class="flex items-center gap-2 text-gray-500"><span class="font-mono text-[11px]">${orderNum}</span><i class="far fa-copy text-lg cursor-pointer active:scale-90 transition hover:text-[#F3C326]" onclick="copyText('${orderNum}', 'Order Num')"></i></div></div></div></div>`; 
+        }); 
+    } 
+    if(html === '') html = '<div class="text-center text-gray-400 mt-10 font-bold uppercase tracking-wider text-xs">No Data Found.</div>'; content.innerHTML = html; document.getElementById('historyModal').classList.remove('hidden-el'); 
+}
+
+function openHistoryModalFull(type) {
+    document.getElementById('fullHistoryTitle').innerText = type;
+    const content = document.getElementById('fullHistoryContent');
+    let html = '';
+
+    if (type === 'Game History' && user.betHistory) {
+        let betsArr = Array.isArray(user.betHistory) ? user.betHistory : Object.values(user.betHistory);
+        betsArr.forEach(b => { 
+            let isWin = b.status === 'WIN';
+            let isPending = b.status === 'PENDING';
+            let colorBg = 'bg-gray-400';
+            if (b.selection === 'Green') colorBg = 'bg-green-500';
+            else if (b.selection === 'Red') colorBg = 'bg-red-500';
+            else if (b.selection === 'Violet') colorBg = 'bg-purple-500';
+            else if (b.selection === 'Big') colorBg = 'bg-orange-400';
+            else if (b.selection === 'Small') colorBg = 'bg-blue-400';
+            else if (!isNaN(parseInt(b.selection))) {
+                let num = parseInt(b.selection);
+                colorBg = num===0||num===5 ? 'bg-purple-500' : (num%2===0 ? 'bg-red-500' : 'bg-green-500');
+            }
+            let stClass = isWin ? 'text-green-500 border-green-500' : (isPending ? 'text-[#F3C326] border-[#F3C326]' : 'text-red-500 border-red-500');
+            let stText = isWin ? 'Succeed' : (isPending ? 'Pending' : 'Failed');
+            let amtStr = isWin ? '+৳' + (b.wonAmt||0).toFixed(2) : (isPending ? '৳' + b.amount : '-৳' + b.amount);
+
+            html += `
+            <div class="flex items-center justify-between p-3 border border-gray-100 bg-white mb-2 rounded-xl shadow-sm">
+                <div class="w-[50px] h-[50px] rounded-xl flex items-center justify-center text-white font-black text-sm shadow-inner ${colorBg}">
+                    ${b.selection}
+                </div>
+                <div class="flex-1 px-4">
+                    <div class="text-gray-800 font-bold text-[14px] flex items-center gap-1">${b.period}</div>
+                    <div class="text-gray-400 text-[11px] font-medium mt-0.5">${(b.date || '').replace('T', ' ').substring(0,19)}</div>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <div class="text-[11px] font-bold px-3 py-0.5 rounded border ${stClass} bg-white mb-1 tracking-wider inline-block">${stText}</div>
+                    <div class="${stClass.split(' ')[0]} font-black text-[14px] drop-shadow-sm">${amtStr}</div>
+                </div>
+            </div>`;
+        });
+    } else if (type === 'Transactions' && user.transactions) {
+        let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+        txArr.forEach(t => { 
+            let stColor = ['accepted','complete','success'].includes(String(t.status).toLowerCase()) ? 'text-[#22c55e]' : (String(t.status).toLowerCase() === 'rejected' ? 'text-red-500' : 'text-[#F3C326]'); 
+            let prefix = ['Withdraw', 'Bet', 'Game moved out'].includes(t.type) ? '-' : '+';
+            if(t.type === 'Withdraw') stColor = 'text-red-500';
+            let noteHtml = '';
+            if(t.note && t.note.trim() !== '') noteHtml = `<div class="mt-3 p-3 bg-gray-50 border border-gray-100 rounded text-gray-500 text-[11px] font-medium whitespace-pre-wrap shadow-inner">${t.note}</div>`;
+            else if (t.trx) noteHtml = `<div class="mt-3 p-3 bg-gray-50 border border-gray-100 rounded text-gray-500 text-[11px] font-medium shadow-inner">TrxID: ${t.trx}</div>`;
+
+            html += `
+            <div class="bg-white rounded-lg mb-4 shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-gray-200 overflow-hidden">
+                <div class="bg-[#F3C326] text-white px-4 py-2 font-bold text-sm tracking-wide shadow-sm">${t.type}</div>
+                <div class="p-4 space-y-3">
+                    <div class="flex justify-between items-center text-[13px] border-b border-gray-100 pb-2"><span class="text-gray-500">Detail</span><span class="text-gray-700 font-medium">${t.type}</span></div>
+                    <div class="flex justify-between items-center text-[13px] border-b border-gray-100 pb-2"><span class="text-gray-500">Time</span><span class="text-gray-700 font-medium">${t.date || new Date(t.timestamp).toLocaleString()}</span></div>
+                    <div class="flex justify-between items-center text-[13px]"><span class="text-gray-500">Balance</span><span class="${stColor} font-bold text-[15px] drop-shadow-sm">${prefix}৳${parseFloat(t.amount).toFixed(2)}</span></div>
+                    ${noteHtml}
+                </div>
+            </div>`; 
+        });
+    }
+    
+    if(html === '') html = '<div class="text-center text-gray-400 mt-10 font-bold uppercase tracking-wider text-xs">No Data Found.</div>';
+    content.innerHTML = html;
+    document.getElementById('fullHistoryModal').classList.remove('hidden-el');
+}
+
+function openSystemNotificationModal() { document.getElementById('systemNotificationModal').classList.remove('hidden-el'); }
+
+function redeemGift() { 
+    const code = document.getElementById('giftInputCode').value.trim(); if(!code) return; 
+    database.ref('gift_codes/' + code).once('value', s => { 
+        if(s.exists() && (s.val().active || s.val().status === 'active')) { 
+            const data = s.val(); const maxLimit = data.maxLimit || 1; const claimedUsers = data.claimedUsers || {}; const claimedCount = Object.keys(claimedUsers).length;
+            if (claimedUsers[user.phone]) return alert("You have already claimed this gift code!");
+            if (claimedCount >= maxLimit) return alert("Gift code limit reached! Better luck next time.");
+            const amt = parseFloat(data.amount); const noteText = data.note || 'Red envelope bonus'; 
+            user.balance += amt; user.wager_left = (parseFloat(user.wager_left) || 0) + (amt * 2); 
+            if(!user.giftHistory) user.giftHistory =[]; let gArr = Array.isArray(user.giftHistory) ? user.giftHistory : Object.values(user.giftHistory); 
+            gArr.unshift({code, amount: amt, date: new Date().toLocaleString(), timestamp: Date.now(), note: noteText}); user.giftHistory = gArr; 
+            if(!user.transactions) user.transactions =[]; let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+            txArr.unshift({ type: 'Red envelope', amount: amt, method: 'Gift Code', status: 'Complete', date: new Date().toLocaleString(), timestamp: Date.now(), orderNum: 'GIFT' + Date.now(), note: noteText });
+            user.transactions = txArr; claimedUsers[user.phone] = true; let updates = { claimedUsers: claimedUsers }; if (claimedCount + 1 >= maxLimit) { updates.active = false; updates.status = 'used'; }
+            database.ref('gift_codes/' + code).update(updates); database.ref('users/' + user.phone).set(user); 
+            alert("Claimed ৳" + amt); document.getElementById('giftInputCode').value = ""; renderGiftHistory(); updateUI(); 
+        } else { alert("Invalid or Used Gift Code"); }
+    }); 
+}
+
+function renderGiftHistory() { 
+    if(!user) return; const list = document.getElementById('giftHistoryList'); let html = ''; 
+    if(user.giftHistory) { let gArr = Array.isArray(user.giftHistory) ? user.giftHistory : Object.values(user.giftHistory); gArr.forEach(g => { html += `<div class="bg-gray-50 border border-gray-100 p-4 rounded-xl mb-3 flex justify-between items-center shadow-sm hover:shadow-md transition"><div><div class="text-xs font-black text-gray-800 mb-1 uppercase tracking-wider">Reward Claimed</div><div class="text-[10px] font-bold text-gray-400">${g.date}</div></div><div class="text-right flex items-center justify-end"><div class="text-[#F3C326] font-black text-sm bg-yellow-50 px-3 py-1.5 rounded shadow-sm border border-yellow-100"><i class="fas fa-wallet mr-2"></i> ${g.amount}</div></div></div>`; }); } 
+    if(html === '') html = '<div class="text-center text-gray-400 text-xs mt-10 font-bold uppercase tracking-wider">No gifts claimed.</div>'; list.innerHTML = html; 
+}
+
+let chatListenerRef = null;
+function openCsChat() {
+    if(!user) return alert("Please login first to chat with support!");
+    document.getElementById('csChatModal').classList.remove('hidden-el');
+    if(chatListenerRef) chatListenerRef.off(); chatListenerRef = database.ref(`support_chats/${user.phone}/messages`);
+    chatListenerRef.on('value', snap => {
+        const body = document.getElementById('csChatBody'); body.innerHTML = '';
+        if(snap.exists()) {
+            const msgs = Object.values(snap.val()).sort((a,b)=>a.timestamp - b.timestamp);
+            msgs.forEach(m => {
+                const isMe = m.sender === 'user'; const time = new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                let contentHtml = m.type === 'image' ? `<img src="${m.content}" class="max-w-[200px] rounded-lg cursor-pointer border border-black/10 shadow-sm" onclick="window.open('${m.content}')">` : `<p class="text-[13px] font-bold whitespace-pre-wrap">${m.content}</p>`;
+                if(isMe) { body.innerHTML += `<div class="flex justify-end"><div class="max-w-[75%] bg-[#F3C326] text-white rounded-2xl rounded-tr-sm p-3 shadow-sm">${contentHtml}<span class="text-[9px] font-black opacity-70 block text-right mt-1">${time}</span></div></div>`; } 
+                else { body.innerHTML += `<div class="flex justify-start"><div class="max-w-[75%] bg-white border border-gray-200 text-gray-800 rounded-2xl rounded-tl-sm p-3 shadow-sm">${contentHtml}<span class="text-[9px] font-black opacity-40 block text-left mt-1">${time}</span></div></div>`; }
+            });
+            setTimeout(() => { body.scrollTop = body.scrollHeight; }, 100);
+        } else { body.innerHTML = `<div class="text-center text-gray-400 font-bold text-sm mt-10 uppercase tracking-widest"><i class="fas fa-headset text-4xl mb-4 block text-gray-300"></i>How can we help you?</div>`; }
+    });
+}
+function closeCsChat() { document.getElementById('csChatModal').classList.add('hidden-el'); if(chatListenerRef) chatListenerRef.off(); }
+function sendCsText() { const inp = document.getElementById('csTextInput'); const txt = inp.value.trim(); if(!txt) return; inp.value = ''; pushCsMessage('text', txt); }
+async function sendCsImage(input) {
+    if(!input.files || input.files.length === 0) return; const file = input.files[0]; const maxSize = 5 * 1024 * 1024; if(file.size > maxSize) return alert("Image too large! Maximum 5MB."); pushCsMessage('text', '[Uploading image...]');
+    try { const ext = file.name.split('.').pop(); const fileName = `cs_${user.phone}_${Date.now()}.${ext}`; const storageRef = storage.ref(`support_images/${fileName}`); await storageRef.put(file); const url = await storageRef.getDownloadURL(); pushCsMessage('image', url); } 
+    catch(e) { console.error(e); alert("Image upload failed"); } input.value = '';
+}
+function pushCsMessage(type, content) {
+    const msg = { sender: 'user', type: type, content: content, timestamp: Date.now() }; database.ref(`support_chats/${user.phone}/messages`).push(msg);
+    database.ref(`support_chats/${user.phone}/userInfo`).update({ uid: user.uid, phone: user.phone, name: user.name || user.phone, lastMessageTime: Date.now(), unreadByAdmin: true });
+}
+
+function openNotifModal(title) {
+    document.getElementById('notifModalTitle').innerText = title;
+    document.getElementById('notifModalMessage').innerText = "Feature is coming soon!";
+    document.getElementById('platformNotifModal').classList.remove('hidden-el');
+    setTimeout(() => { document.getElementById('platformNotifContent').classList.remove('scale-95'); document.getElementById('platformNotifContent').classList.add('scale-100'); }, 10);
+}
+function closeNotifModal() {
+    document.getElementById('platformNotifContent').classList.add('scale-95'); document.getElementById('platformNotifContent').classList.remove('scale-100'); setTimeout(() => { document.getElementById('platformNotifModal').classList.add('hidden-el'); }, 200);
+}
+
+function hasSuccessfulDeposit() {
+    if(!user || !user.transactions) return false;
+    let txArr = Array.isArray(user.transactions) ? user.transactions : Object.values(user.transactions);
+    return txArr.some(t => t.type === 'Deposit' && ['accepted','complete','success'].includes(String(t.status).toLowerCase()));
+}
+
+function openGame() { 
+    if (!hasSuccessfulDeposit()) {
+        alert("গেম খেলার আগে অনুগ্রহ করে প্রথম ডিপোজিট করুন!"); 
+        switchTab('wallet');
+        setWalletTab('deposit');
+        return;
+    }
+    document.getElementById('gamePage').classList.remove('hidden-el'); 
+    setTimeout(() => { if(!document.getElementById('chartHistoryContainer').classList.contains('hidden-el')) { drawTrendLines(); } }, 100); 
+} 
+
+function closeGame() { document.getElementById('gamePage').classList.add('hidden-el'); }
+function hideModal(id) { document.getElementById(id).classList.add('hidden-el'); } 
+function copyRefLink() { const link = document.getElementById('referralLink'); link.classList.remove('hidden-el'); link.select(); document.execCommand('copy'); link.classList.add('hidden-el'); alert("Copied"); } 
+function logout() { localStorage.removeItem('bd99_user'); location.reload(); } 
+function refreshBalance() { location.reload(); }
+
+const csBtn = document.getElementById('csFloatBtn'); let isDraggingCS = false; let csStartX, csStartY; let csMoved = false;
+const dragStart = (e) => { isDraggingCS = true; csMoved = false; let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX; let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY; const rect = csBtn.getBoundingClientRect(); csStartX = clientX - rect.left; csStartY = clientY - rect.top; };
+const dragMove = (e) => { if (!isDraggingCS) return; let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX; let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY; let newX = clientX - csStartX; let newY = clientY - csStartY; csBtn.style.left = newX + 'px'; csBtn.style.top = newY + 'px'; csBtn.style.bottom = 'auto'; csBtn.style.right = 'auto'; csMoved = true; if (e.type.includes('touch')) e.preventDefault(); };
+const dragEnd = () => { isDraggingCS = false; };
+csBtn.addEventListener('mousedown', dragStart); document.addEventListener('mousemove', dragMove); document.addEventListener('mouseup', dragEnd);
+csBtn.addEventListener('touchstart', dragStart, {passive: false}); csBtn.addEventListener('touchmove', dragMove, {passive: false}); csBtn.addEventListener('touchend', dragEnd);
+csBtn.addEventListener('click', (e) => { if (csMoved) { e.preventDefault(); return false; } openCsChat(); });
+</script>
+</body>
+</html>
+```
